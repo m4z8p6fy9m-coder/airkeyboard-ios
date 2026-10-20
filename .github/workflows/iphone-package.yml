@@ -1,0 +1,68 @@
+name: iPhone package
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  iphone:
+    if: github.event.repository.private == false
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check repository and packaging
+        run: |
+          python3 Scripts/check_repository.py
+          python3 -m unittest discover -s Tests/Packaging -v
+          swift test
+      - name: Archive a real iPhone build
+        run: >-
+          xcodebuild -project AirKeyboard.xcodeproj -scheme AirKeyboard
+          -configuration Release -destination 'generic/platform=iOS'
+          -archivePath build/AirKeyboard.xcarchive ARCHS=arm64
+          CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO archive
+      - name: Record requested entitlements in ad-hoc signatures for the external signer
+        run: |
+          APP="build/AirKeyboard.xcarchive/Products/Applications/AirKeyboard.app"
+          codesign --force --sign - --timestamp=none --entitlements Config/Keyboard.entitlements "$APP/PlugIns/AirKeyboardKeyboard.appex"
+          codesign --force --sign - --timestamp=none --entitlements Config/Widgets.entitlements "$APP/PlugIns/AirKeyboardWidgets.appex"
+          codesign --force --sign - --timestamp=none --entitlements Config/App.entitlements "$APP"
+          codesign --verify --deep --strict "$APP"
+      - name: Package for Windows sideload signing
+        run: >-
+          python3 Scripts/package_iphone.py
+          --app build/AirKeyboard.xcarchive/Products/Applications/AirKeyboard.app
+          --output build/iphone/AirKeyboard.ipa
+      - name: Include instructions and requested App Group configuration
+        run: |
+          cp Desktop/Windows/README.md build/iphone/INSTALL-WINDOWS.md
+          cp Config/*.entitlements build/iphone/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AirKeyboard-iPhone-requires-signing
+          path: build/iphone/
+          if-no-files-found: error
+          retention-days: 1
+  windows:
+    if: github.event.repository.private == false
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build native Windows companion
+        shell: pwsh
+        run: ./Desktop/Windows/Build.ps1
+      - name: Execute companion tests
+        shell: pwsh
+        run: |
+          $exe = (Resolve-Path ./Desktop/Windows/dist/AirKeyboardConnect.exe).Path
+          $report = Join-Path $env:RUNNER_TEMP 'AirKeyboard-connect-tests.txt'
+          $process = Start-Process -FilePath $exe -ArgumentList @('--self-test', ('"' + $report + '"')) -WindowStyle Hidden -Wait -PassThru
+          Get-Content -LiteralPath $report
+          if ($process.ExitCode -ne 0) { throw 'Windows companion tests failed' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AirKeyboard-Connect-Windows
+          path: Desktop/Windows/dist/
+          if-no-files-found: error
+          retention-days: 1

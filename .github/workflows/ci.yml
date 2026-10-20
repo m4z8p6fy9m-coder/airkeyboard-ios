@@ -1,0 +1,61 @@
+name: Free simulator build and tests
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: free-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  source-checks:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check repository and packaging code without credentials
+        run: |
+          python3 Scripts/check_repository.py
+          python3 -m unittest discover -s Tests/Packaging -v
+  simulator:
+    if: github.event.repository.private == false
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect free Apple toolchain
+        run: xcodebuild -version
+      - name: Run Foundation source tests
+        run: swift test
+      - name: Build and test all native simulator targets, install and launch the app
+        run: bash Scripts/simulator_build.sh
+      - name: Save simulator evidence (not an iPhone IPA)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: AirKeyboard-Simulator-results
+          path: |
+            build/evidence/
+            build/TestResults.xcresult/
+          if-no-files-found: warn
+          retention-days: 1
+          compression-level: 9
+  windows-companion:
+    if: github.event.repository.private == false
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build native Windows companion with the installed framework compiler
+        shell: pwsh
+        run: ./Desktop/Windows/Build.ps1
+      - name: Execute Windows inspector tests
+        shell: pwsh
+        run: |
+          $exe = (Resolve-Path ./Desktop/Windows/dist/AirKeyboardConnect.exe).Path
+          $report = Join-Path $env:RUNNER_TEMP 'AirKeyboard-connect-tests.txt'
+          $process = Start-Process -FilePath $exe -ArgumentList @('--self-test', ('"' + $report + '"')) -WindowStyle Hidden -Wait -PassThru
+          Get-Content -LiteralPath $report
+          if ($process.ExitCode -ne 0) { throw 'Windows companion tests failed' }
