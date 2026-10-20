@@ -6,6 +6,7 @@ struct StudioView: View {
     @State var theme: Theme
     @State private var saved = false
     @State private var reset = false
+    @FocusState private var nameFocused: Bool
     var body: some View {
         Form {
             Section {
@@ -13,6 +14,7 @@ struct StudioView: View {
             } footer: { Text("Tap keys to try the design. Audio previews respect device mute and your volume preferences.") }
             Section("Identity") {
                 TextField("Name", text: $theme.name)
+                    .focused($nameFocused).submitLabel(.done).onSubmit { nameFocused = false }
                 TextField("Description", text: $theme.description, axis: .vertical)
                 Picker("Appearance", selection: $theme.appearance) {
                     ForEach(ThemeAppearance.allCases, id: \.self) { Text($0.rawValue.capitalized).tag($0) }
@@ -36,12 +38,18 @@ struct StudioView: View {
                 Button("Preview sound") { model.previewSound(theme.soundPack) }
             }
             Section {
-                Button("Save & apply") { Task { if await model.save(theme), await model.apply(theme) { saved = true } } }
-                    .disabled(model.busy)
                 Button("Reset design", role: .destructive) { reset = true }
             }
         }
         .navigationTitle("Keyboard Studio").navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Save & apply") {
+                    nameFocused = false
+                    Task { if await model.save(theme), await model.apply(theme) { saved = true } }
+                }.disabled(model.busy)
+            }
+        }
         .alert("Theme saved & applied", isPresented: $saved) { Button("Done") { dismiss() } } message: {
             Text(model.sharingAvailable ? "Your design is available to the keyboard and widgets." : "Saved in this app. Local mode cannot share it with the keyboard or widgets; the keyboard has its own built-in design picker.")
         }
