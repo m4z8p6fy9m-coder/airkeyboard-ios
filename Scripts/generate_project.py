@@ -115,7 +115,8 @@ def generate_project(signing=None, local_device=False):
     sources = {'AirKeyboard': core + platform + swift_files('App'),
                'AirKeyboardKeyboard': core + platform + swift_files('Keyboard'),
                'AirKeyboardWidgets': core + [p for p in platform if not p.endswith('SoundEngine.swift')] + swift_files('Widgets'),
-               'AirKeyboardTests': core + swift_files('Tests/CoreTests')}
+               'AirKeyboardTests': core + swift_files('Tests/CoreTests'),
+               'AirKeyboardUITests': swift_files('Tests/UITests')}
     resource_paths = ['Resources/PrivacyInfo.xcprivacy'] + [f'Resources/{p}.wav' for p in ['tactile', 'mechanical', 'pop', 'digital']]
     refs = {p: file(p, 'sourcecode.swift') for p in sorted(set(sum(sources.values(), [])))}
     for p in resource_paths:
@@ -161,13 +162,15 @@ def generate_project(signing=None, local_device=False):
                 proxy = obj('proxy:' + extension, f'isa = PBXContainerItemProxy; containerPortal = {uid("project")}; proxyType = 1; remoteGlobalIDString = {uid("target:" + extension)}; remoteInfo = {extension};')
                 dependencies.append(obj('dependency:' + extension, f'isa = PBXTargetDependency; target = {uid("target:" + extension)}; targetProxy = {proxy};'))
             phases.append(obj('embed_phase', 'isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = ""; dstSubfolderSpec = 13; name = "Embed App Extensions"; files = ' + arr(embed_builds) + '; runOnlyForDeploymentPostprocessing = 0;'))
-        suffix = '' if target == 'AirKeyboard' else '.keyboard' if target.endswith('Keyboard') else '.widgets' if target.endswith('Widgets') else '.tests'
+        suffix = '' if target == 'AirKeyboard' else '.keyboard' if target.endswith('Keyboard') else '.widgets' if target.endswith('Widgets') else '.uitests' if target == 'AirKeyboardUITests' else '.tests'
         settings = {'PRODUCT_NAME': '$(TARGET_NAME)', 'PRODUCT_BUNDLE_IDENTIFIER': 'org.example.airkeyboard' + suffix,
                     'CODE_SIGN_STYLE': 'Automatic', 'DEVELOPMENT_TEAM': '', 'TARGETED_DEVICE_FAMILY': '1,2',
                     'SWIFT_EMIT_LOC_STRINGS': 'YES', 'LD_RUNPATH_SEARCH_PATHS': '$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks'}
         if target.endswith('Tests'):
             settings['GENERATE_INFOPLIST_FILE'] = 'YES'
             settings['SKIP_INSTALL'] = 'YES'
+            if target == 'AirKeyboardUITests':
+                settings['TEST_TARGET_NAME'] = 'AirKeyboard'
         else:
             short = 'App' if target == 'AirKeyboard' else 'Keyboard' if target.endswith('Keyboard') else 'Widgets'
             settings.update({'INFOPLIST_FILE': f'Config/{short}-Info.plist', 'CODE_SIGN_ENTITLEMENTS': f'Config/{short}.entitlements'})
@@ -178,7 +181,7 @@ def generate_project(signing=None, local_device=False):
         if signing and target in signing:
             settings.update(signing[target])
         cfg = config_list(target, settings)
-        product_type = 'application' if target == 'AirKeyboard' else 'bundle.unit-test' if target.endswith('Tests') else 'app-extension'
+        product_type = 'application' if target == 'AirKeyboard' else 'bundle.ui-testing' if target == 'AirKeyboardUITests' else 'bundle.unit-test' if target.endswith('Tests') else 'app-extension'
         obj('target:' + target, f'isa = PBXNativeTarget; name = {target}; productName = {target}; productType = "com.apple.product-type.{product_type}"; productReference = {product_refs[target]}; buildConfigurationList = {cfg}; buildPhases = {arr(phases)}; buildRules = (); dependencies = {arr(dependencies)};')
     obj('project', f'isa = PBXProject; attributes = {{ LastUpgradeCheck = 1600; }}; buildConfigurationList = {project_configs}; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = {main_group}; productRefGroup = {products}; projectDirPath = ""; projectRoot = ""; targets = {arr([uid("target:" + t) for t in sources])};')
     body = '\n'.join(f'\t\t{k} = {v}' for k, v in sorted(objects.items()))
@@ -191,8 +194,9 @@ def generate_project(signing=None, local_device=False):
  <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES"><BuildActionEntries>
   <BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES">{buildable('AirKeyboard')}</BuildActionEntry>
   <BuildActionEntry buildForTesting="YES" buildForRunning="NO" buildForProfiling="NO" buildForArchiving="NO" buildForAnalyzing="YES">{buildable('AirKeyboardTests')}</BuildActionEntry>
+  <BuildActionEntry buildForTesting="YES" buildForRunning="NO" buildForProfiling="NO" buildForArchiving="NO" buildForAnalyzing="YES">{buildable('AirKeyboardUITests')}</BuildActionEntry>
  </BuildActionEntries></BuildAction>
- <TestAction buildConfiguration="Debug" shouldUseLaunchSchemeArgsEnv="YES"><Testables><TestableReference skipped="NO">{buildable('AirKeyboardTests')}</TestableReference></Testables></TestAction>
+ <TestAction buildConfiguration="Debug" shouldUseLaunchSchemeArgsEnv="YES"><Testables><TestableReference skipped="NO">{buildable('AirKeyboardTests')}</TestableReference><TestableReference skipped="NO">{buildable('AirKeyboardUITests')}</TestableReference></Testables></TestAction>
  <LaunchAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" launchStyle="0" useCustomWorkingDirectory="NO" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" debugServiceExtension="internal" allowLocationSimulation="YES"><BuildableProductRunnable runnableDebuggingMode="0">{buildable('AirKeyboard')}</BuildableProductRunnable></LaunchAction>
  <ProfileAction buildConfiguration="Release" shouldUseLaunchSchemeArgsEnv="YES" savedToolIdentifier="" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES"><BuildableProductRunnable runnableDebuggingMode="0">{buildable('AirKeyboard')}</BuildableProductRunnable></ProfileAction>
  <AnalyzeAction buildConfiguration="Debug"/><ArchiveAction buildConfiguration="Release" revealArchiveInOrganizer="YES"/>

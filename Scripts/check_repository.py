@@ -57,7 +57,7 @@ class RepositoryChecks(unittest.TestCase):
 
     def test_targets_embed_both_extensions(self):
         targets = {o['name']: o for o in self.objects.values() if o['isa'] == 'PBXNativeTarget'}
-        self.assertEqual(set(targets), {'AirKeyboard', 'AirKeyboardKeyboard', 'AirKeyboardWidgets', 'AirKeyboardTests'})
+        self.assertEqual(set(targets), {'AirKeyboard', 'AirKeyboardKeyboard', 'AirKeyboardWidgets', 'AirKeyboardTests', 'AirKeyboardUITests'})
         app = targets['AirKeyboard']
         self.assertEqual(len(app['dependencies']), 2)
         embeds = [self.objects[p] for p in app['buildPhases'] if self.objects[p]['isa'] == 'PBXCopyFilesBuildPhase']
@@ -67,9 +67,13 @@ class RepositoryChecks(unittest.TestCase):
         for name, target in targets.items():
             for cfg_id in self.objects[target['buildConfigurationList']]['buildConfigurations']:
                 cfg = self.objects[cfg_id]['buildSettings']
-                self.assertEqual(cfg['DEVELOPMENT_TEAM'], '')
-                if name != 'AirKeyboardTests':
+                self.assertRegex(cfg['DEVELOPMENT_TEAM'], r'^(?:|[A-Z0-9]{10})$')
+                if not name.endswith('Tests'):
                     for key in ['INFOPLIST_FILE', 'CODE_SIGN_ENTITLEMENTS']:
+                        if key == 'CODE_SIGN_ENTITLEMENTS' and not cfg[key]:
+                            info = plistlib.loads((ROOT / cfg['INFOPLIST_FILE']).read_bytes())
+                            self.assertEqual(info['AirKeyboardStorageMode'], 'local')
+                            continue
                         self.assertTrue((ROOT / cfg[key]).is_file())
 
     def test_source_membership_and_resource_membership(self):
@@ -96,12 +100,14 @@ class RepositoryChecks(unittest.TestCase):
 
     def test_entitlements_and_extension_configuration(self):
         group = plistlib.loads((ROOT / 'Config/App-Info.plist').read_bytes())['AirKeyboardAppGroup']
+        mode = plistlib.loads((ROOT / 'Config/App-Info.plist').read_bytes())['AirKeyboardStorageMode']
         self.assertRegex(group, r'^group\.[A-Za-z0-9.-]+$')
         for name in ['App', 'Keyboard', 'Widgets']:
             data = plistlib.loads((ROOT / f'Config/{name}.entitlements').read_bytes())
-            self.assertEqual(data['com.apple.security.application-groups'], [group])
+            self.assertEqual(data, {} if mode == 'local' else {'com.apple.security.application-groups': [group]})
             info = plistlib.loads((ROOT / f'Config/{name}-Info.plist').read_bytes())
             self.assertEqual(info['AirKeyboardAppGroup'], group)
+            self.assertEqual(info['AirKeyboardStorageMode'], mode)
         keyboard = plistlib.loads((ROOT / 'Config/Keyboard-Info.plist').read_bytes())['NSExtension']
         self.assertEqual(keyboard['NSExtensionPointIdentifier'], 'com.apple.keyboard-service')
         self.assertTrue(keyboard['NSExtensionAttributes']['RequestsOpenAccess'])
@@ -116,7 +122,7 @@ class RepositoryChecks(unittest.TestCase):
         for element in scheme.findall('.//BuildableReference'):
             target = self.objects[element.attrib['BlueprintIdentifier']]
             self.assertEqual(target['name'], element.attrib['BlueprintName'])
-        self.assertEqual(len(scheme.findall('.//TestableReference')), 1)
+        self.assertEqual(len(scheme.findall('.//TestableReference')), 2)
 
     def test_original_audio_is_short_bounded_pcm(self):
         fingerprints = set()
