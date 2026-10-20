@@ -21,9 +21,9 @@ swift test
 bash Scripts/simulator_build.sh
 ```
 
-Or open `AirKeyboard.xcodeproj` and select the **AirKeyboard** scheme. There is no dependency install or project-generation step required. The checked-in project includes the app, UIKit keyboard, widgets/control and core XCTest targets. Native APIs target iOS 18.0 because of WidgetKit controls.
+Or open `AirKeyboard.xcodeproj` and select the **AirKeyboard** scheme. There is no dependency install or project-generation step required. The checked-in project includes the app, UIKit keyboard, widgets/control, core XCTest and UI test targets. Native APIs target iOS 18.0 because of WidgetKit controls.
 
-On GitHub, **Free simulator build and tests** runs automatically on pushes/PRs and can be started manually from Actions. It uses standard `macos-15`, Ubuntu and Windows runners; no secrets are required. Native artifacts/logs have one-day retention. The simulator artifact contains the `.app`, logs and evidence, **not an iPhone IPA**. The pipeline fails on a real build/test failure and does not manufacture success.
+On GitHub, **Free simulator build and tests** runs automatically on pushes/PRs and can be started manually from Actions. It uses standard `macos-15-intel`, Ubuntu and Windows runners; no secrets are required. Native artifacts/logs have one-day retention. The simulator artifact contains the `.app`, logs and evidence, **not an iPhone IPA**. The pipeline fails on a real build/test failure and does not manufacture success.
 
 On Windows, run the two Python commands above and `Desktop/Windows/Build.ps1`; use the public Actions run for Xcode compilation. Windows has no Xcode or iOS Simulator.
 
@@ -59,7 +59,7 @@ To restore the default simulator/shared-capable configuration, run the generator
 Status is recorded in [the implementation report](Documentation/IMPLEMENTATION_REPORT.md) with links to actual Actions runs as they become available. Do not infer native or device success from source checks.
 
 - Portable repository checks, Python packager/profile-validator tests and Windows inspector self-tests have executed locally.
-- 16 Foundation XCTest cases are authored (including isolated local-settings persistence); their first Mac execution and native target builds are being verified through the public pipeline.
+- 16 Foundation XCTest cases passed on macOS and 16 passed in iOS Simulator. App and both native extensions compiled with device signing disabled. The app UI save/relaunch test is being retested; consult the report for its actual result.
 - Physical iPhone typing/audio, shared App Group behavior, widget/control interactions and accessibility require device testing. No signed-device or installable-IPA result is claimed.
 
 ## Project map

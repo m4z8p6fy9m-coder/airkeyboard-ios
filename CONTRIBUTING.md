@@ -1,6 +1,6 @@
 # Contributing
 
-Start with README, the architecture document and the factual feature-status table. First contributions should prioritize getting the first native build green and documenting actual device findings. Do not report source inspection as a successful device test.
+Start with README, the architecture document and the factual feature-status table. Preserve free public simulator CI and document actual device findings. No paid Apple membership or signing files are prerequisites for contributing. Do not report source inspection as a successful device test.
 
 Use a focused branch. Explain the user-visible problem, implementation, actual checks run and remaining verification. Use native frameworks and no unnecessary dependencies. Maintain no-network/no-logging keyboard behavior. Never include signing credentials, personal team IDs or private files. Keep keyboard input responsive; no per-key file I/O or long animation. Make every visible control meaningful and accessible.
 
