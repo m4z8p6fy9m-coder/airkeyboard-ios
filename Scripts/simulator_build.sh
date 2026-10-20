@@ -9,10 +9,6 @@ xcodebuild -project AirKeyboard.xcodeproj -scheme AirKeyboard -configuration Deb
   -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build \
   2>&1 | tee build/evidence/simulator-build.log
 SIMULATOR_UDID="$(python3 Scripts/select_simulator.py | cut -d= -f2)"
-xcodebuild -project AirKeyboard.xcodeproj -scheme AirKeyboard \
-  -destination "id=$SIMULATOR_UDID" -derivedDataPath build/DerivedData \
-  -resultBundlePath build/TestResults.xcresult CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO test \
-  2>&1 | tee build/evidence/simulator-tests.log
 xcrun simctl boot "$SIMULATOR_UDID" 2>/dev/null || true
 xcrun simctl bootstatus "$SIMULATOR_UDID" -b
 APP="build/DerivedData/Build/Products/Debug-iphonesimulator/AirKeyboard.app"
@@ -25,3 +21,8 @@ This artifact contains an iOS SIMULATOR app, build/test logs and simulator evide
 It is NOT a signed device build, installable iPhone IPA, or physical-device test.
 Run the .app only in a compatible iOS Simulator on a Mac.
 EOF
+xcodebuild -project AirKeyboard.xcodeproj -scheme AirKeyboard \
+  -destination "id=$SIMULATOR_UDID" -derivedDataPath build/DerivedData \
+  -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 \
+  -resultBundlePath build/TestResults.xcresult CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO test \
+  2>&1 | tee build/evidence/simulator-tests.log
