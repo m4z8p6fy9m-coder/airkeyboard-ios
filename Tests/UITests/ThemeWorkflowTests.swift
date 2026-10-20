@@ -13,7 +13,7 @@ final class ThemeWorkflowTests: XCTestCase {
         create.tap()
         let name = app.textFields["Name"]
         XCTAssertTrue(name.waitForExistence(timeout: 10))
-        let title = "CI Theme " + UUID().uuidString.prefix(8)
+        let title = "CI Theme " + String(UUID().uuidString.prefix(8))
         name.tap()
         let existing = name.value as? String ?? ""
         name.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: existing.count) + title)
