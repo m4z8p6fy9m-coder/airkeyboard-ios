@@ -16,12 +16,8 @@ final class ThemeWorkflowTests: XCTestCase {
         let title = "CI Theme " + String(UUID().uuidString.prefix(8))
         name.tap()
         let existing = name.value as? String ?? ""
-        name.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: existing.count) + title)
-        let save = app.buttons["Save & apply"]
-        for _ in 0..<10 {
-            if save.isHittable { break }
-            app.swipeUp()
-        }
+        name.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: existing.count) + title + "\n")
+        let save = app.navigationBars["Keyboard Studio"].buttons["Save & apply"]
         XCTAssertTrue(save.isHittable)
         save.tap()
         let confirmation = app.alerts["Theme saved & applied"]
