@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AirKeyboard theme v1",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "minimumIOS": {
+      "type": "integer",
+      "const": 18
+    },
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60,
+      "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F]*\\S[^\\u0000-\\u001F\\u007F-\\u009F]*$"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "background": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "key": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "primary": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "secondary": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "accent": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "pressed": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "border": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$"
+    },
+    "cornerRadius": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 20
+    },
+    "spacing": {
+      "type": "number",
+      "minimum": 2,
+      "maximum": 8
+    },
+    "padding": {
+      "type": "number",
+      "minimum": 2,
+      "maximum": 12
+    },
+    "borderWidth": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 2
+    },
+    "font": {
+      "type": "string",
+      "enum": [
+        "rounded",
+        "standard",
+        "monospaced"
+      ]
+    },
+    "appearance": {
+      "type": "string",
+      "enum": [
+        "dark",
+        "light"
+      ]
+    },
+    "layout": {
+      "type": "string",
+      "enum": [
+        "qwerty",
+        "qwertz"
+      ]
+    },
+    "soundPack": {
+      "type": "string",
+      "enum": [
+        "tactile",
+        "mechanical",
+        "pop",
+        "digital",
+        "silent"
+      ]
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "minimumIOS",
+    "id",
+    "name",
+    "description",
+    "background",
+    "key",
+    "primary",
+    "secondary",
+    "accent",
+    "pressed",
+    "border",
+    "cornerRadius",
+    "spacing",
+    "padding",
+    "borderWidth",
+    "font",
+    "appearance",
+    "layout",
+    "soundPack"
+  ],
+  "additionalProperties": true
+}
