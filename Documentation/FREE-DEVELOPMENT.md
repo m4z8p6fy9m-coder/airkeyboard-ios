@@ -4,7 +4,7 @@ AirKeyboard source and original assets are MIT licensed. Development must requir
 
 ## Default path
 
-The public `airkeyboard-ios` repository runs source checks, Foundation tests, unsigned iOS Simulator builds/tests, app launch and Windows companion tests using standard `ubuntu-latest`, `macos-15` and `windows-latest` runners. No secrets, certificate or provisioning profile is required. Jobs are guarded to run only in a public repository; no larger/premium runner is configured. Artifacts have one-day retention. No payment method or spending budget is configured by this project.
+The public `airkeyboard-ios` repository runs source checks, Foundation tests, unsigned iOS Simulator builds/tests, app launch and Windows companion tests using standard `ubuntu-latest`, `macos-15-intel` and `windows-latest` runners. No secrets, certificate or provisioning profile is required. Jobs are guarded to run only in a public repository; no larger/premium runner is configured. Artifacts have one-day retention. No payment method or spending budget is configured by this project.
 
 GitHub currently documents standard hosted runners as free for public repositories. Storage limits and service terms still apply; artifacts are kept briefly, and this project never opts into a paid service. [GitHub runner reference](https://docs.github.com/en/actions/reference/runners/github-hosted-runners), [billing overview](https://docs.github.com/en/billing/concepts/product-billing/github-actions).
 

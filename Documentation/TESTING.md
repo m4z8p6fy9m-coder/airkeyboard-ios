@@ -1,16 +1,14 @@
 # Testing and troubleshooting
 
-## Executed on Windows
+## Executed evidence
 
-`python Scripts/check_repository.py`: **8 tests passed**. These inspect the OpenStep project graph, source/resource membership, extension embedding, shared scheme references, entitlement and Info.plist consistency, privacy declarations, six example packages, short original WAV assets and a narrow source guard against network/clipboard clients. They do not compile Swift, run the importer, play sounds or operate an iPhone. See IMPLEMENTATION_REPORT.md.
+- 8 portable repository checks: project graph, membership, scheme, metadata, extension embedding, privacy declarations, examples and bounded original WAVs.
+- 18 Python tests: 7 packager, 5 optional profile-validator, 3 free configuration and 3 eligible Simulator selection tests. Synthetic profile/Mach-O fixtures are not real credentials or installable applications.
+- 7 Windows companion tests; actual framework compilation locally and in Windows CI. The WinForms surface was rendered/reviewed.
+- 16 Foundation tests passed via macOS `swift test` and 16 passed in iOS Simulator XCTest. They cover codec validation, library recovery, settings, keyboard state and isolated local persistence.
+- App, UIKit keyboard and widget/control compiled against the Simulator SDK without device signing. Real-app UI workflow is being retested after making Save & apply permanently reachable.
 
-Windows follow-up: the native companion EXE compiled successfully and its **7 C# self-tests passed**. The actual WinForms surface was rendered and visually reviewed. `python -m unittest discover -s Tests/Packaging -v` ran **12 passing tests** for IPA packaging and profile validation. Fixtures use synthetic Mach-O headers and invented profile identifiers; they do not establish real Apple signing or iPhone installation. Total executed local checks: **27**. The hosted IPA/signing workflows and physical USB/signing/install path remain unexecuted. Follow WINDOWS.md for setup.
-
-## Native tests to run on a Mac
-
-`swift test` runs 13 Foundation XCTest cases covering all starter-theme round trips, malformed/oversized packages, invalid colors/geometry, future versions/enums, ignored path metadata, name/compatibility validation, real temporary-file import/export, library integrity, save/reload/corruption recovery, invalid-save preservation, sound preferences, shift/caps/layout state, and shared-settings serialization/defaults.
-
-The AirKeyboard Xcode scheme also runs those core tests in AirKeyboardTests on an iOS simulator. Follow README build/test commands. Compile all three product targets before considering a first release. There are no automated host-field UI tests or end-to-end control tests yet. `SharedStore` app/control races and App Intent execution still require signed integration tests; core serialization tests alone cannot prove them.
+See [implementation report](IMPLEMENTATION_REPORT.md) for run links and final UI/launch status. These separate categories do not establish physical-device, shared capability, audible-output or IPA success. Follow README commands; both core and UI bundles belong to the scheme.
 
 ## Device acceptance checklist
 
@@ -31,9 +29,9 @@ Record exact iPhone model, iOS build, Xcode build, signing configuration and obs
 
 ## Troubleshooting
 
-**Xcode build fails:** check the first actual compiler error, the selected SDK and target source membership. This Windows-authored source has not yet been compiled. Do not label failures as signing-only without reading diagnostics.
+**Xcode build fails:** check the first actual compiler error, the selected SDK and target source membership. Public CI has compiled all native product targets; consult the current run for later changes. Do not label failures as signing-only without reading diagnostics.
 
-**App Group unavailable:** use the same registered group in three entitlements and SharedStore.group, with matching provisioning. A free/personal team may not provision required capabilities. Keyboard typing can still use Dark Glass; shared customization cannot be claimed verified.
+**App Group unavailable:** use the same registered group in three entitlements and SharedStore.group, with matching provisioning. A free/personal team may not provision required capabilities. Local keyboard typing and its built-in Design picker remain available; shared customization is unverified.
 
 **Theme does not change:** save/apply in the containing app, confirm no shared-storage error, then reopen the keyboard or wait for its two-second visible refresh. Confirm all targets use the same installed bundle prefix/group. A saved library edit alone is not an apply.
 
@@ -43,4 +41,4 @@ Record exact iPhone model, iOS build, Xcode build, signing configuration and obs
 
 **Keyboard unavailable:** add it in Settings and select with the globe key in a supported non-secure field. Some applications block extensions. No programmatic activation or supported reliable status check is supplied.
 
-**No iOS simulator in CI:** install an iOS 18+ runtime, inspect `xcrun simctl list devices available`, then re-run simulator selection. CI is prepared but has not yet run; runner inventories can change.
+**No iOS simulator in CI:** install an iOS 18+ runtime, inspect `xcrun simctl list devices available`, then re-run simulator selection. The selector uses eligible Xcode destinations; runner inventories can change.
