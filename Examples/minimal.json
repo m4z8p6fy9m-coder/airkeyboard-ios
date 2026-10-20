@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "minimumIOS": 18,
+  "id": "00000000-0000-4000-8000-000000000002",
+  "name": "Minimal",
+  "description": "Less color, more clarity.",
+  "background": "#181818",
+  "key": "#303030",
+  "primary": "#FFFFFF",
+  "secondary": "#BBBBBB",
+  "accent": "#DDDDDD",
+  "pressed": "#4A5A65",
+  "border": "#4C5D69",
+  "cornerRadius": 8,
+  "spacing": 5,
+  "padding": 6,
+  "borderWidth": 0.5,
+  "font": "rounded",
+  "appearance": "dark",
+  "layout": "qwerty",
+  "soundPack": "tactile"
+}
