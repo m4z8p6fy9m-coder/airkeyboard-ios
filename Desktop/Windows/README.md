@@ -1,20 +1,19 @@
 # AirKeyboard Connect für Windows
 
-Eine eigenständige native Windows-Oberfläche für den AirKeyboard-Installationsablauf. Keine Python-, Node- oder Xcode-Installation auf deinem Windows-PC erforderlich. Benötigt Windows 10/11 mit .NET Framework 4.8, Apple-Gerätetreiber und separat installiertes Sideloadly. Sideloadly und Apple-Software werden nicht mitgeliefert.
+Kostenlose Open-Source-Entwicklung benötigt weder Apple-Developer-Abo noch Signierdateien. Der Standardweg ist der öffentliche **Free simulator build and tests**-Workflow: Quellcode, Swift-Tests, Simulator-Build und Simulator-Ausführung auf einem Standard-macOS-Runner. Dieser Build ist keine iPhone-IPA.
 
-## Start
+## Windows-Helfer starten
 
-1. Starte `AirKeyboardConnect.exe` aus dem Windows-Paket.
-2. Verbinde das iPhone per USB, entsperre es und bestätige „Vertrauen“. „USB-Geräte prüfen“ zeigt Apple-USB-Erkennung und den Status des Apple Mobile Device Service. Das bestätigt weder die Gerätefreigabe noch eine erfolgreiche Installation.
-3. Wähle eine `AirKeyboard.ipa`. Alternativ öffne mit `Besitzer/Repository` den GitHub-Workflow **iPhone package** und lade nach einem erfolgreichen Lauf das Artefakt herunter und entpacke es. Die IPA muss zuerst auf einem macOS-Buildserver gebaut werden. Es ist kein eigener Mac nötig. Die Quellcode-ZIP ist keine IPA.
-4. Der Helfer prüft Paketpfade, Größen und die drei ARM64-iOS-Programme für App, Tastatur und Widgets. Signaturen/Provisioning werden dadurch nicht verifiziert.
-5. Installiere Sideloadly nur von [sideloadly.io](https://sideloadly.io/), starte es über den Helfer und ziehe die geprüfte IPA vom dunklen Dateifeld in dessen Fenster. Falls nötig, wähle deine installierte `Sideloadly.exe` über den Dateidialog aus.
-6. Wähle in Sideloadly dein iPhone und gib dort deinen Apple-Account ein. Behalte die Tastatur- und Widget-Erweiterungen; verwende keine Optionen zum Entfernen von Erweiterungen oder Verändern der Mindest-iOS-Version. Starte die Signierung/Installation in Sideloadly. Der Helfer speichert keine Zugangsdaten und meldet den externen Vorgang nicht als erfolgreich.
-7. Aktiviere gegebenenfalls den Entwicklermodus und vertraue dem Entwicklerprofil gemäß der aktuellen Installationsanleitung des Signierwerkzeugs. Öffne AirKeyboard auf dem iPhone, füge die Tastatur in Einstellungen → Allgemein → Tastatur hinzu und wähle sie über die Globus-Taste.
+`AirKeyboardConnect.exe` ist eine echte native .NET-Framework-Anwendung. Windows 10/11 mit .NET Framework 4.8 genügt für die Oberfläche. Python, Node, Xcode, Apple-Treiber oder ein Signierwerkzeug sind für das bloße Öffnen der Oberfläche und der öffentlichen CI-Seite nicht erforderlich.
 
-Eigene Töne brauchen optionalen Tastatur-Vollzugriff. Gemeinsame Themes und die Systemsteuerung brauchen App-Group-Berechtigungen, die für alle drei Komponenten konsistent provisioniert sein müssen. Ob der verwendete Sideload-Signer diese korrekt erhält/zuordnet, muss am Gerät geprüft werden. Der unsignierte Build ist allein nicht installierbar. Ohne passende Berechtigungen sind geteilte Einstellungen nicht garantiert; das ist keine erfolgreiche Vollinstallation.
+- **Kostenlose Simulator-Builds öffnen:** öffnet die Actions-Seite des öffentlichen Repositories. Kein eigener Mac ist für den gehosteten Build nötig; der Simulator selbst läuft nicht auf Windows.
+- **USB-Geräte prüfen:** sucht nach Apple-USB-Geräten und dem Apple Mobile Device Service. Dafür sind passende Apple-Treiber nötig. Das bestätigt keine Gerätefreigabe oder Installation.
+- **Vorhandene Geräte-IPA prüfen:** optionaler Weg, falls bereits eine echte Geräte-IPA vorhanden ist. Der Helfer prüft ZIP-Pfade/Größen und die ARM64-iOS-Programme für App, Tastatur und Widgets. Er prüft keine Apple-Provisionierung und erzeugt keine IPA.
+- **Sideloadly starten:** optionaler, benutzergesteuerter Übergang zu einem separat installierten externen Signierer. Die geprüfte IPA kann vom Dateifeld in dessen Fenster gezogen werden. Apple-Login und der tatsächliche Installationsstart erfolgen dort. Der Helfer speichert keine Zugangsdaten und meldet den externen Vorgang nicht als erfolgreich.
 
-## Selbst bauen und testen
+Sideloadly ist keine Pflichtabhängigkeit der Entwicklung und wird nicht mitgeliefert. Falls du diesen Geräteweg ausprobierst, nutze dessen offizielle Seite und aktuelle Anleitung. Behalte beide Erweiterungen. Free-Account-Unterstützung eines Signierers beweist nicht, dass AirKeyboard inklusive App Groups funktioniert. Kein Kauf eines Apple-Abos wird vorausgesetzt oder empfohlen.
+
+## Lokal bauen und testen
 
 ```powershell
 powershell -NoProfile -File .\Desktop\Windows\Build.ps1
@@ -25,4 +24,4 @@ Get-Content -LiteralPath $report
 if ($process.ExitCode -ne 0) { throw 'Tests failed' }
 ```
 
-Der C#-Compiler aus dem .NET Framework wird verwendet; keine NuGet-Pakete. Sieben Tests prüfen echte ZIP/Mach-O-Auswertung mit synthetischen Testdateien. Diese sind ausdrücklich keine echten iPhone-Apps und werden nicht als Installationsdateien ausgeliefert. Keine Installation/Signierung wurde am Gerät getestet. Der Quellcode ist MIT-lizenziert; externe Tools haben eigene Lizenzen.
+Keine NuGet-Pakete. Sieben ausgeführte Tests verwenden synthetische ZIP/Mach-O-Dateien in temporären Verzeichnissen. Diese sind keine installierbaren Apps und werden nicht ausgeliefert. Die kostenlose Xcode-/Personal-Team-Möglichkeit, lokale Einstellungen ohne App Groups und die Grenzen stehen in `Documentation/FREE-DEVELOPMENT.md`.
