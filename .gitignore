@@ -1,0 +1,15 @@
+.DS_Store
+.build/
+.swiftpm/
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcresult
+__pycache__/
+*.pyc
+.env
+*.p12
+*.mobileprovision
+Desktop/Windows/dist/
+*.keychain*
