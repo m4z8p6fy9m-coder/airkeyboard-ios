@@ -6,7 +6,7 @@
 
 Status: Release-Entwurf; noch keine veröffentlichte Geräteversion.
 
-Aktueller Nachweis: [Lauf #20](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39634992350), Commit `f17568818222115c671249bb2612e3ebff38f5d6`: alle drei CI-Jobs grün, einschließlich des erweiterten Studio-UI-Tests (66,154 Sekunden). Der Draft bleibt unveröffentlicht.
+Aktueller Nachweis: [Lauf #20](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39634992350), Commit `f17568818222115c671249bb2612e3ebff38f5d6`: alle drei CI-Jobs grün, einschließlich des erweiterten Studio-UI-Tests (66,154 Sekunden). Gebaut mit Simulator-SDK 18.5; ausgeführt auf iPhone SE (3. Generation), Runtime iOS 26.2. SDK- und Laufzeitversion sind getrennt dokumentiert. Der Draft bleibt unveröffentlicht.
 
 ### Foundation
 
@@ -24,7 +24,7 @@ Aktueller Nachweis: [Lauf #20](https://github.com/m4z8p6fy9m-coder/airkeyboard-i
 ### Open-Source-Auftritt
 
 - Scanbares README mit eigenem Logo-Platzhalter, dynamischen Shields.io-Badges, Feature- und Verification-Tabellen, Quick Start und aufklappbaren Details.
-- Eindeutig markierte `assets/demo.gif`- und `assets/theme-studio.png`-Platzhalter; keine simulierten Produktaufnahmen. Vorläufiges Logo aus dem eigenen App-Icon; Herkunft in ASSETS.md.
+- Eindeutig markierter `assets/demo.gif`-Platzhalter und echte, unveränderte Studio-Aufnahme aus dem bestandenen CI-Lauf #20 in `assets/theme-studio.png`. Der Generator schützt vorhandene Aufnahmen. Vorläufiges Logo aus dem eigenen App-Icon; Herkunft und Hashes dokumentiert.
 - Bug-/Feature-Vorlagen, PR-Checkliste und Good-First-Issue-Einstieg.
 
 ### Theme-Studio-Polish

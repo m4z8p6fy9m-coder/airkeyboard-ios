@@ -11,7 +11,7 @@ All bundled assets are original to this project and released under the repositor
 | App/Assets.xcassets/AppIcon.appiconset/icon.png | Original code-drawn ink/mint keyboard design in Scripts/generate_project.py | MIT |
 | Examples/*.json and starter palettes | Original theme tokens in Shared/Core/StarterThemes.swift | MIT |
 
-No proprietary keyboard sounds, third-party font files, copied branding or product screenshots are included. Audio format: mono signed 16-bit PCM, 44,100 Hz, 28–45 ms. The deterministic generator is the editable source for both sound and icon assets. Python checks verify signal/file properties; subjective listening has not been performed.
+No proprietary keyboard sounds, third-party font files or copied branding are included. Documentation includes one authentic Simulator screenshot with provenance in assets/README.md; it is not a physical-device claim. Audio format: mono signed 16-bit PCM, 44,100 Hz, 28–45 ms. The deterministic generator is the editable source for both sound and icon assets. Python checks verify signal/file properties; subjective listening has not been performed.
 
 SF Symbols are referenced through Apple's system APIs, not redistributed as source assets; their use is governed by Apple's terms. System fonts and frameworks remain Apple software. This license does not relicense Apple components or grant trademark rights.
 
@@ -21,6 +21,6 @@ SF Symbols are referenced through Apple's system APIs, not redistributed as sour
 | --- | --- | --- |
 | `assets/logo.png` | Byte-for-byte copy of the original app icon above | MIT; provisional project logo. |
 | `assets/demo.gif` | Original labeled single-frame documentation placeholder, generated with built-in Windows .NET drawing | MIT; not a demo recording. |
-| `assets/theme-studio.png` | Original labeled documentation placeholder from the same generator | MIT; not an iOS screenshot. |
+| `assets/theme-studio.png` | Unedited original Theme Studio screenshot from XCTest attachment in successful CI run #20, tested commit f175688 | Project-created Simulator capture; framework/UI components remain subject to Apple terms. |
 
-`Scripts/generate_readme_assets.ps1` is the editable source for the two placeholders and copies the logo. It introduces no app or package dependency. System fonts are rendered through installed APIs; no font file is distributed. Replacement capture requirements are in `assets/README.md`.
+`Scripts/generate_readme_assets.ps1` is the editable source for the GIF placeholder and copies the logo. It preserves the authentic Studio capture and creates a labeled Studio fallback only if that file is missing. It introduces no app or package dependency. System fonts are rendered through installed APIs; no font file is distributed. Replacement capture requirements are in `assets/README.md`.

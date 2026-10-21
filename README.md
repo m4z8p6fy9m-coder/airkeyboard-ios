@@ -16,12 +16,19 @@
 ## 📸 Demo
 
 <p align="center">
-  <img src="assets/demo.gif" width="680" alt="Demo-Platzhalter – noch keine Bildschirmaufnahme" />
-  <br />
-  <img src="assets/theme-studio.png" width="680" alt="Theme-Studio-Platzhalter – noch kein echter App-Screenshot" />
+  <img src="assets/theme-studio.png" width="320" alt="Echte iOS-Simulator-Aufnahme: Theme-Studio mit ausgeschalteter Dark-preview-Option, hellem Vorschaukontext und unveränderten Dark-Glass-Tasten" />
 </p>
 
-Die vorgesehenen Aufnahmen zeigen später das Bearbeiten eines Themes und die interaktive Tastaturvorschau; beide Dateien sind derzeit **klar beschriftete Platzhalter**, keine Produktaufnahmen. [Asset-Status und Austausch](assets/README.md).
+Das echte Theme-Studio aus [CI-Lauf #20](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39634992350) zeigt den hellen Vorschaukontext mit unveränderten Tastenfarben. [Herkunft und Grenzen der Aufnahme](assets/README.md).
+
+<details>
+<summary>Demo-GIF – ausdrücklich noch ein Platzhalter</summary>
+
+<img src="assets/demo.gif" width="680" alt="Demo-Platzhalter – noch keine Bildschirmaufnahme" />
+
+Hier folgt später eine echte Aufnahme des Bearbeitens und Speicherns eines Themes. Die aktuelle GIF-Datei ist ein beschriftetes Einzelbild und keine Demo-Aufzeichnung.
+
+</details>
 
 ## ✨ Features
 
@@ -85,7 +92,7 @@ Tastaturgestaltung soll ohne Abo und ohne Cloud-Zwang möglich sein. AirKeyboard
 
 ## ✅ Verification Status
 
-**Beleg:** [erfolgreicher Lauf #20 vom 21.10.2026](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39634992350), Commit [`f175688`](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/commit/f17568818222115c671249bb2612e3ebff38f5d6), Xcode 16.4 / iOS Simulator 18.5. Ein Badge ersetzt diesen konkreten Nachweis nicht.
+**Beleg:** [erfolgreicher Lauf #20 vom 21.10.2026](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39634992350), Commit [`f175688`](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/commit/f17568818222115c671249bb2612e3ebff38f5d6), Xcode 16.4 (Simulator-SDK 18.5), iPhone SE (3. Generation) mit Runtime iOS 26.2. Ein Badge ersetzt diesen konkreten Nachweis nicht.
 
 | Bereich | Status | Nachweis / Grenze |
 | --- | --- | --- |
@@ -136,7 +143,7 @@ Kleine, nachvollziehbar geprüfte Beiträge sind willkommen. Lies [CONTRIBUTING.
 | `Shared/Core/`, `Shared/Platform/` | Modelle, Validierung, Speicherung, Audio und Farben |
 | `Tests/`, `Scripts/`, `.github/` | Automatisierte Prüfungen, Build-Werkzeuge und Community-Vorlagen |
 | `Resources/`, `Examples/` | Eigene Sound-Assets und Theme-Beispiele |
-| `assets/` | README-Logo und klar markierte Demo-Platzhalter |
+| `assets/` | Vorläufiges Logo, echte Studio-Aufnahme und Demo-Platzhalter |
 | `Desktop/Windows/` | Optionaler Windows-Begleiter |
 
 </details>
