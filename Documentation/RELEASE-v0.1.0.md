@@ -14,6 +14,10 @@ Native SwiftUI theme studio and library, UIKit keyboard, six original themes, or
 
 CI includes CoreSimulator initialization, a dedicated boot step, command timeouts, no post-test diagnostic collection and a 25-minute job limit. The README exposes the live CI status and explicit evidence. Logo uses the project's own icon; demo/studio media remain clearly labeled placeholders, not product captures.
 
+## Limited Studio polish
+
+The editor keeps direct reactive theme bindings and adds a local light/dark preview context with SF Symbols and a rounded surround. It preserves palette tokens and stored theme appearance. The existing UI workflow is extended to switch both ways and attach an authentic editor capture; its current CI outcome must be checked separately from the earlier run #17 evidence.
+
 ## Pending before device claims
 
 Physical iPhone installation and host typing; Apple signing/provisioning; actual audio/mute/Full Access behavior; shared App Group/widget/control integration; Accessibility device matrix. See the verification report and testing guide.
