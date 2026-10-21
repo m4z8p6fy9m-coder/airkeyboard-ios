@@ -40,7 +40,7 @@ The only app-code change in this maintenance work is StudioView: an independent 
 
 ## Open-source presentation
 
-The v0.1.0 Simulator Foundation draft adds a concise README, live repository badges, asset provenance, CHANGELOG.md, issue/PR templates and a Good First Issues contribution path. These do not establish device compatibility. Every entry links to actual evidence or remains explicitly pending.
+The published v0.1.0 Simulator Foundation pre-release includes a concise README, live repository badges, asset provenance, CHANGELOG.md, issue/PR templates and a Good First Issues contribution path. These do not establish device compatibility. Every entry links to actual evidence or remains explicitly pending.
 
 ## Free-first policy and remaining limits
 
@@ -49,3 +49,11 @@ Active Actions use only standard Ubuntu, macos-15 (standard ARM64) and Windows r
 Free Personal Team testing on an existing/borrowed Mac is documented with expiry/capability limits. Local mode deliberately gives up cross-target theme/control synchronization when App Groups cannot be provisioned. No identity, profile or entitlement authority is fabricated. Simulator apps are never represented as iPhone IPAs.
 
 Remaining acceptance work: real host-field typing and lifecycle; audible feedback/mute/access matrix; widgets/control execution and shared updates; accessibility and device profiling; valid device signing/install and USB workflow. No prediction, swipe input, dictation, arbitrary Control Center replacement, passcode-screen replacement or security bypass is implemented. See TESTING.md and FREE-DEVELOPMENT.md.
+
+## v0.1.0 publication verification – 2026-10-21
+
+Before publication, run #20 was rechecked through GitHub: all three jobs succeeded and the real-app UI test passed in 66.154 seconds. The draft title and simulator-only warning matched, no v0.1.0 tag existed, main was exactly b36f4be17d2c4abf4d62ab304f3a3cef157afaf7, the README exposed all badges/verification/real Studio media and the explicit GIF placeholder, both issue templates were visible and the good first issue label existed. No discrepancy was found.
+
+The existing draft was published as a public pre-release: [v0.1.0 – Simulator Foundation](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/releases/tag/v0.1.0). The warning **Simulator-only. Device verification pending.** remains. The target was selected as the explicit commit; an independent git ls-remote check confirmed refs/tags/v0.1.0 resolves exactly to `b36f4be17d2c4abf4d62ab304f3a3cef157afaf7`.
+
+After publication, separate documentation commits add the [physical-device checklist](../Docs/Device-Verification.md), link the release/checklist in the README and update the release records. All device rows remain pending, with status/device/iOS/date/note fields. No app code, tests, workflows or dependencies were changed for this publication. The release tag deliberately remains on the requested earlier commit; these later documentation updates belong to main. Run #20 remains the cited native evidence; no new native execution is claimed for documentation edits.
