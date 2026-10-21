@@ -19,13 +19,17 @@ final class ThemeWorkflowTests: XCTestCase {
                            "Preview must expose \(value) without reloading; observed \(String(describing: preview.value))")
         }
         expectPreviewValue("1")
-        preview.tap()
+        // SwiftUI can expose the whole labeled row as the switch's accessibility frame.
+        // Tap the trailing control area rather than the label/spacing at its center.
+        preview.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
         expectPreviewValue("0")
         let studio = XCTAttachment(screenshot: app.screenshot())
         studio.name = "Theme Studio light preview"
         studio.lifetime = .keepAlways
         add(studio)
-        preview.tap()
+        // SwiftUI can expose the whole labeled row as the switch's accessibility frame.
+        // Tap the trailing control area rather than the label/spacing at its center.
+        preview.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
         expectPreviewValue("1")
         let name = app.textFields["Name"]
         XCTAssertTrue(name.waitForExistence(timeout: 10))
