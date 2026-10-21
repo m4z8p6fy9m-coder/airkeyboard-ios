@@ -16,7 +16,7 @@
 ## 📸 Demo
 
 <p align="center">
-  <img src="assets/theme-studio.png?v=ci20" width="320" alt="Echte iOS-Simulator-Aufnahme: Theme-Studio mit ausgeschalteter Dark-preview-Option, hellem Vorschaukontext und unveränderten Dark-Glass-Tasten" />
+  <img src="https://raw.githubusercontent.com/m4z8p6fy9m-coder/airkeyboard-ios/7bd8851b6442355a671eb18fdb2073e57e70ae46/assets/theme-studio.png" width="320" alt="Echte iOS-Simulator-Aufnahme: Theme-Studio mit ausgeschalteter Dark-preview-Option, hellem Vorschaukontext und unveränderten Dark-Glass-Tasten" />
 </p>
 
 Das echte Theme-Studio aus [CI-Lauf #20](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39634992350) zeigt den hellen Vorschaukontext mit unveränderten Tastenfarben. [Herkunft und Grenzen der Aufnahme](assets/README.md).
