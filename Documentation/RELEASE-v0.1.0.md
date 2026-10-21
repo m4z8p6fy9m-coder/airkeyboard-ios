@@ -2,7 +2,7 @@
 
 **Simulator-only. Device verification pending.**
 
-This is a draft for review, not a published device release. No installable iPhone IPA is supplied.
+Published on 2026-10-21 as a public **pre-release**: [v0.1.0 – Simulator Foundation](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/releases/tag/v0.1.0). No installable iPhone IPA is supplied.
 
 ## Included
 
@@ -22,6 +22,6 @@ The editor keeps direct reactive theme bindings and adds a local light/dark prev
 
 Physical iPhone installation and host typing; Apple signing/provisioning; actual audio/mute/Full Access behavior; shared App Group/widget/control integration; Accessibility device matrix. See the verification report and testing guide.
 
-The release target is `v0.1.0`. Keep it as a GitHub draft until a maintainer chooses to publish; saving the draft does not claim the tag or a device binary is already released.
+Tag `v0.1.0` resolves to `b36f4be17d2c4abf4d62ab304f3a3cef157afaf7`, independently verified after publication. Later documentation commits on main add the [device checklist](../Docs/Device-Verification.md) and release links; they do not move the tag or establish device verification.
 
 Full changes: [CHANGELOG.md](../CHANGELOG.md).
