@@ -6,8 +6,9 @@
     <a href="https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/m4z8p6fy9m-coder/airkeyboard-ios/ci.yml?branch=main&amp;style=flat-square&amp;label=Simulator%20CI" alt="Aktueller CI-Status auf main" /></a>
     <a href="LICENSE"><img src="https://img.shields.io/github/license/m4z8p6fy9m-coder/airkeyboard-ios?style=flat-square" alt="MIT-Lizenz" /></a>
     <a href="https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/commits/main/"><img src="https://img.shields.io/github/last-commit/m4z8p6fy9m-coder/airkeyboard-ios?style=flat-square&amp;label=Letzter%20Commit" alt="Letzter Commit" /></a>
+    <a href="https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/releases"><img src="https://img.shields.io/github/v/release/m4z8p6fy9m-coder/airkeyboard-ios?include_prereleases&amp;style=flat-square&amp;label=Release%20%28inkl.%20Pre-release%29" alt="Neuestes Release einschließlich Pre-releases" /></a>
   </p>
-  <p><a href="#quick-start">Quick Start</a> · <a href="#verification">Verifikation</a> · <a href="CHANGELOG.md">Changelog</a> · <a href="CONTRIBUTING.md">Mitmachen</a></p>
+  <p><a href="#features">Features</a> · <a href="#quick-start">Quick Start</a> · <a href="#verification">Verification</a> · <a href="#roadmap">Roadmap</a> · <a href="#contributing">Contributing</a> · <a href="#security">Security</a></p>
 </div>
 
 > **v0.1.0 – Simulator Foundation (veröffentlichtes Pre-release)**  
@@ -35,6 +36,8 @@ Das echte Theme-Studio aus [CI-Lauf #20](https://github.com/m4z8p6fy9m-coder/air
 Hier folgt später eine echte Aufnahme des Bearbeitens und Speicherns eines Themes. Die aktuelle GIF-Datei ist ein beschriftetes Einzelbild und keine Demo-Aufzeichnung.
 
 </details>
+
+<a id="features"></a>
 
 ## ✨ Features
 
@@ -130,6 +133,56 @@ Windows kann portable Prüfungen und den [Windows-Helfer](Desktop/Windows/README
 
 </details>
 
+## 🏗️ Architektur
+
+SwiftUI-Studio, UIKit-Tastatur und WidgetKit/Control Center teilen bei tatsächlich verfügbarer App Group nur das aktive Theme und Sound-Präferenzen. Ohne diese Berechtigung bleiben die lokalen Speicher getrennt. [Mermaid-Diagramm und Datenflüsse](Docs/Architecture.md) · [technische Details](Documentation/ARCHITECTURE.md).
+
+## ❓ FAQ
+
+<details>
+<summary>Warum keine Cloud?</summary>
+
+Themes und Einstellungen bleiben lokal, ohne Konto, Abo oder Backend. Die iOS-App enthält keinen Netzwerkclient und speichert keine Tastatureingaben. Ein unabhängiger Datenschutz-Audit ist noch offen.
+
+</details>
+
+<details>
+<summary>Warum Simulator-first?</summary>
+
+Der Simulator ermöglicht überprüfbare Builds und Tests ohne Gerätezertifikate oder bezahlten Developer-Account. Diese Ergebnisse belegen keine iPhone-Installation und keinen Hardware-Betrieb.
+
+</details>
+
+<details>
+<summary>Wie aktiviere ich die Tastatur?</summary>
+
+Nach tatsächlicher Installation samt Erweiterung: **Einstellungen → Allgemein → Tastatur → Tastaturen → Tastatur hinzufügen → AirKeyboard**. In einem unterstützten Textfeld über die Globe-Taste auswählen. Full Access ist für normales Tippen nicht erforderlich. Die Geräteaktivierung ist noch nicht verifiziert; sichere Felder und manche Hosts verwenden die Systemtastatur.
+
+</details>
+
+<details>
+<summary>Was fehlt noch?</summary>
+
+Signierung/Installation auf einem physischen iPhone, Host-Tippen, Audio, App Group, Accessibility und Performance sind offen. [Device verification tracking #1](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/issues/1) sammelt die noch ausstehenden Nachweise.
+
+</details>
+
+[Vollständige FAQ mit Grenzen von Full Access](Docs/FAQ.md).
+
+<a id="roadmap"></a>
+
+## 🗺️ Roadmap
+
+Kurzfristig stehen Gerätetests und ein echtes Demo-GIF im Vordergrund. Wortvorhersage und eine erweiterte Theme-Galerie sowie später Lokalisierung und weitere Layouts sind **geplant, nicht zugesagt** und noch nicht umgesetzt. [Roadmap mit offenen Punkten](ROADMAP.md).
+
+<a id="security"></a>
+
+## 🔒 Sicherheit
+
+[Sicherheitsrichtlinie und unterstützte Versionen](SECURITY.md) beschreiben Bedrohungsmodell, Full Access und den vorgesehenen Meldeweg über GitHub Security Advisories. **Private externe Sicherheitsmeldungen sind derzeit deaktiviert**; die Richtlinie nennt die Lücke und das Vorgehen ohne Veröffentlichung sensibler Details. [Datenschutzmodell](Documentation/PRIVACY.md) · [Verhaltenskodex](CODE_OF_CONDUCT.md).
+
+<a id="contributing"></a>
+
 ## 🤝 Contributing
 
 Kleine, nachvollziehbar geprüfte Beiträge sind willkommen. Lies [CONTRIBUTING.md](CONTRIBUTING.md) und die dortigen **Good First Issues**; beginne mit [Issues mit dem Label `good first issue`](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/issues?q=is%3Aissue%20is%3Aopen%20label%3A%22good%20first%20issue%22).
@@ -138,7 +191,7 @@ Kleine, nachvollziehbar geprüfte Beiträge sind willkommen. Lies [CONTRIBUTING.
 
 ## 📚 Dokumentation
 
-[Architektur](Documentation/ARCHITECTURE.md) · [Theme-Format](Documentation/THEMES.md) · [Audio](Documentation/AUDIO.md) · [Datenschutz](Documentation/PRIVACY.md) · [Asset-Herkunft](ASSETS.md) · [Änderungen](CHANGELOG.md).
+[Architektur und Diagramm](Docs/Architecture.md) · [FAQ](Docs/FAQ.md) · [Roadmap](ROADMAP.md) · [Theme-Format](Documentation/THEMES.md) · [Audio](Documentation/AUDIO.md) · [Datenschutz](Documentation/PRIVACY.md) · [Asset-Herkunft](ASSETS.md) · [Änderungen](CHANGELOG.md).
 
 <details>
 <summary>Projektstruktur</summary>
