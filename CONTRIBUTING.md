@@ -23,3 +23,22 @@ Use the [bug template](.github/ISSUE_TEMPLATE/bug_report.md) for reproduction st
 ### Documentation and visual assets
 
 README badges report live repository metadata; they are not device certification. Keep the release warning **Simulator-only. Device verification pending.** until hardware evidence warrants changing it. README assets and their replacement criteria are documented in [assets/README.md](assets/README.md). Keep their provenance in ASSETS.md and summarize every user-visible change in CHANGELOG.md and the commit message.
+
+## Code Style
+
+Follow the surrounding Swift/SwiftUI/UIKit style: four-space indentation, `UpperCamelCase` types and `lowerCamelCase` members. Prefer clear names, small focused changes and explicit error handling. Do not reformat unrelated files. Keep Foundation-only models and validation in `Shared/Core`; place platform APIs in the app/extension or `Shared/Platform`. Preserve main-actor UI ownership and avoid blocking file/audio work on keypresses. Never log, persist or transmit typed text.
+
+Use Xcode's formatter and compiler diagnostics with the existing test commands above. SwiftLint is not currently configured or required; this documentation does not add a lint dependency or CI step. Include actual validation in the PR and mark device-only checks pending when no hardware was tested.
+
+## Wie man ein Theme beisteuert
+
+1. Prüfe [Theme-Format und Grenzen](Documentation/THEMES.md), [Schema](Documentation/theme.schema.json) und ein vorhandenes [JSON-Beispiel](Examples/dark-glass.json). Ein Theme enthält Design-Tokens und eine vorhandene Sound-Pack-ID; keine externen Fonts, Bilder, URLs oder ausführbaren Inhalte.
+2. Für ein integriertes Starter-Theme: einen eindeutigen, stabilen Bezeichner in [StarterThemes.swift](Shared/Core/StarterThemes.swift) ergänzen und ein entsprechendes Paket unter `Examples/` bereitstellen. UUID-Kollisionen mit bestehenden Themes vermeiden. Ein Import in der App vergibt absichtlich eine neue UUID.
+3. Alle Pflichtfelder für Schema-Version 1 und `minimumIOS: 18` beibehalten. Erlaubte Farben, Geometrie, Appearance, Layout, Fonts und Packs aus dem Formatdokument verwenden. Eine neue Appearance erzeugt keine neue Farbpalette automatisch.
+4. Namen/Beschreibung, lesbare Texte, Akzent-, Gedrückt- und Randfarben prüfen. Helle/dunkle Vorschau und schmale Simulator-Größen kontrollieren; ein optischer Eindruck ersetzt keinen Accessibility-Test. Keine Kontrastprüfung behaupten, die nicht durchgeführt wurde.
+5. Vorhandene Repository- und Core-Tests ausführen; Import/Export und Vorschau im Simulator prüfen, wenn Xcode verfügbar ist. Testumgebung, Resultate und offene Geräteprüfungen im PR angeben. Bei geänderten Ressourcen/Mitgliedschaften auch den bestehenden Projektgenerator berücksichtigen.
+6. Nur eigene oder entsprechend lizenzierte Inhalte beitragen, Herkunft in [ASSETS.md](ASSETS.md) dokumentieren und die MIT-Lizenz des Beitrags bestätigen. Authentische Aufnahmen kennzeichnen; keine AirCard-Assets übernehmen. Änderungen im Changelog und PR nachvollziehbar beschreiben.
+
+## Community-Kanäle
+
+GitHub Discussions sind am 21.10.2026 deaktiviert. Empfehlung an Maintainer: bei Bedarf unter **Settings → General → Features → Discussions** aktivieren. Diese Änderung aktiviert keine Repository-Einstellung. Bis dahin die vorhandenen Issue-Vorlagen nutzen; vertrauliche Sicherheitsdetails ausschließlich nach [SECURITY.md](SECURITY.md) behandeln.
