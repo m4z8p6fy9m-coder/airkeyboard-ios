@@ -10,8 +10,14 @@
   <p><a href="#quick-start">Quick Start</a> · <a href="#verification">Verifikation</a> · <a href="CHANGELOG.md">Changelog</a> · <a href="CONTRIBUTING.md">Mitmachen</a></p>
 </div>
 
-> **v0.1.0 – Simulator Foundation (Release-Entwurf)**  
+> **v0.1.0 – Simulator Foundation (veröffentlichtes Pre-release)**  
 > **Simulator-only. Device verification pending.** Es gibt noch keine installierbare iPhone-IPA. Der CI-Badge zeigt den Workflow auf `main`; konkrete Nachweise stehen in der Verifikationstabelle.
+
+## 📦 Releases
+
+[v0.1.0 – Simulator Foundation](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/releases/tag/v0.1.0) ist als öffentliches **Pre-release** veröffentlicht. Tag `v0.1.0` zeigt auf `b36f4be17d2c4abf4d62ab304f3a3cef157afaf7`.
+
+**Simulator-only. Device verification pending.** Das Release enthält Quellcode; es gibt keine signierte, installierbare iPhone-IPA. [Geräte-Checkliste mit offenen Prüfpunkten](Docs/Device-Verification.md).
 
 ## 📸 Demo
 
