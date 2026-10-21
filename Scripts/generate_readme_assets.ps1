@@ -31,5 +31,8 @@ function Write-Placeholder([string]$File, [string]$Title, [string]$Subtitle, [bo
     foreach ($resource in @($labelFont,$titleFont,$bodyFont,$smallFont,$mint,$white,$muted,$border,$graphics,$bitmap)) { $resource.Dispose() }
 }
 Write-Placeholder 'demo.gif' 'Demo walkthrough' 'Authentic Simulator recording coming soon.' $true
-Write-Placeholder 'theme-studio.png' 'Theme Studio' 'Authentic editor screenshot coming soon.' $false
+# Preserve an authentic capture already present at this path.
+if (-not (Test-Path -LiteralPath (Join-Path $Assets 'theme-studio.png'))) {
+    Write-Placeholder 'theme-studio.png' 'Theme Studio' 'Authentic editor screenshot coming soon.' $false
+}
 Write-Output "README placeholders generated in $Assets"
