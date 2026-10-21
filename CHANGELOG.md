@@ -4,9 +4,9 @@
 
 > **Simulator-only. Device verification pending.**
 
-Status: Release-Entwurf; noch keine veröffentlichte Geräteversion.
+Status: [Öffentliches Pre-release v0.1.0](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/releases/tag/v0.1.0), veröffentlicht am 21.10.2026; keine Geräteversion. Tag auf `b36f4be17d2c4abf4d62ab304f3a3cef157afaf7`.
 
-Aktueller Nachweis: [Lauf #20](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39634992350), Commit `f17568818222115c671249bb2612e3ebff38f5d6`: alle drei CI-Jobs grün, einschließlich des erweiterten Studio-UI-Tests (66,154 Sekunden). Gebaut mit Simulator-SDK 18.5; ausgeführt auf iPhone SE (3. Generation), Runtime iOS 26.2. SDK- und Laufzeitversion sind getrennt dokumentiert. Der Draft bleibt unveröffentlicht.
+Aktueller Nachweis: [Lauf #20](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39634992350), Commit `f17568818222115c671249bb2612e3ebff38f5d6`: alle drei CI-Jobs grün, einschließlich des erweiterten Studio-UI-Tests (66,154 Sekunden). Gebaut mit Simulator-SDK 18.5; ausgeführt auf iPhone SE (3. Generation), Runtime iOS 26.2. SDK- und Laufzeitversion sind getrennt dokumentiert. Der Hinweis „Simulator-only. Device verification pending.“ bleibt im veröffentlichten Release erhalten.
 
 ### Foundation
 
@@ -39,3 +39,9 @@ Aktueller Nachweis: [Lauf #20](https://github.com/m4z8p6fy9m-coder/airkeyboard-i
 - Hörbares Audio, Full-Access-/Mute-Verhalten und Latenz auf Hardware.
 - App Group, Widgets und Control Center im tatsächlichen Cross-Process-Betrieb.
 - Accessibility-Matrix auf Geräten. Keine installierbare IPA oder Geräte-Reife versprochen.
+
+### Dokumentation nach Veröffentlichung (main)
+
+- Release und offene [Device-Checkliste](Docs/Device-Verification.md) im README verlinkt. Checkliste mit abhakbaren Prüfpunkten und Status/Gerät/iOS-Version/Datum/Notiz; keine Hardware-Ergebnisse eingetragen.
+- Vorbedingungen vor Veröffentlichung erneut bestätigt; Tag-Ziel unabhängig per Git geprüft. Keine App-Code- oder Abhängigkeitsänderungen.
+- Diese Dokumentation folgt dem unveränderten v0.1.0-Tag in eigenen Commits auf main.
