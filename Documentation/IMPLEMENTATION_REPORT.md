@@ -24,17 +24,19 @@ This report supersedes earlier Windows-only status notes. Native code was actual
 | Windows executable | Framework build succeeded locally and on GitHub Windows; 7 self-tests passed; actual WinForms rendering reviewed |
 | macOS Foundation source tests | 16 passed via swift test on Xcode 16.4 runner |
 | Simulator compilation | App, keyboard, widget/control built against iOS Simulator 18.5 with CODE_SIGNING_ALLOWED=NO |
-| iOS Simulator Core XCTest | 16 passed in run #17 |
-| App UI save/relaunch test | Passed in run #17: create, save, terminate/relaunch and find the persisted theme (81.034 seconds) |
+| iOS Simulator Core XCTest | 16 passed in run #20 |
+| App UI save/relaunch test | Passed in run #20: both preview appearances, create/save, terminate/relaunch and find the persisted theme (66.154 seconds) |
 | Signed device build | Not produced |
 | Installable iPhone IPA | Not produced |
 | Physical iPhone/USB install/typing/audio | Not tested |
 
-[Run #17](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39623141955), tested commit `c3d373e31fc6b48831ad8a710dc7ac6d33ed88ff`, completed successfully on 2026-10-21. Xcode 16.4 (16F6), ARM64 host, iOS Simulator SDK 18.5. The Simulator job took 9m10s; the complete workflow took 9m24s. Both sets of 16 Foundation cases passed, and the real-app UI workflow passed in 81.034 seconds. The same 16 core cases run on two platforms; they are not 32 distinct tests.
+[Run #20](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39634992350), tested commit `f17568818222115c671249bb2612e3ebff38f5d6`, completed successfully on 2026-10-21. Xcode 16.4 (16F6), ARM64 host, iOS Simulator SDK 18.5. Both sets of 16 Foundation cases passed, and the expanded real-app UI workflow passed in 66.154 seconds. The same core cases run on two platforms; they are not 32 distinct tests. Source and Windows jobs also passed.
 
-The public workflow now bounds daemon startup and every Xcode command, initializes CoreSimulator immediately before each invocation, boots the selected device in a dedicated YAML step, disables post-test diagnostic collection and sets a 25-minute job limit. The universal Simulator app is archived before runtime tests, so a later failure does not hide a successful build. Build/boot/test outcomes and logs are separate. No test is silently skipped to manufacture a green result.
+The workflow bounds daemon startup and every Xcode command, initializes CoreSimulator immediately before each invocation, boots in a dedicated YAML step, disables post-test diagnostic collection and sets a 25-minute job limit. The verified standard ARM64 runner remains in use; the retiring macos-14 image is not reintroduced. Build/boot/test outcomes and logs are separate, and the Simulator app is archived before runtime tests.
 
-The Simulator artifact was downloaded and its SHA-256 matched GitHub's `db6ae08cfd1385fe169ee7ccf1a57f643808f8426cf091faac8b9d0119bac606`. ZIP integrity and both embedded extensions were checked. The post-test screen capture is a Home Screen image; it is not evidence of the editor's appearance. README media are explicitly labeled placeholders pending authentic captures.
+The current artifact was downloaded and its SHA-256 matched GitHub's `2774467f507f4ddf1221c3dd53a438531107e5e89acb931537b2e8f35f881b1d`; ZIP integrity passed. The post-test Home Screen snapshot is not relabeled as editor artwork. An authentic Studio capture is attached inside the XCTest bundle; README media deliberately remain labeled placeholders.
+
+The only app-code change in this maintenance work is StudioView: an independent light/dark preview context, SF Symbols and a rounded surround. Theme tokens, persistence and keyboard/widget code are unchanged. The preview remains directly bound to editor state. The UI test targets the actual trailing switch control and waits up to three seconds for each expected accessibility value. The first expanded test failed at its row-center tap; that failure remains visible in Actions. No assertion was removed to obtain the green run.
 
 ## Open-source presentation
 
