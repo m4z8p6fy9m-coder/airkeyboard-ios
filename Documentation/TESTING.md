@@ -8,7 +8,7 @@
 - 16 Foundation tests passed via macOS `swift test` and 16 passed in iOS Simulator XCTest. They cover codec validation, library recovery, settings, keyboard state and isolated local persistence.
 - App, UIKit keyboard and widget/control compiled against the Simulator SDK without device signing. The expanded real-app light/dark preview and create/save/relaunch workflow passed in run #20, with Save & apply reachable in the navigation bar. The switch assertion targets the control and waits for its actual value without a reload.
 
-See [implementation report](IMPLEMENTATION_REPORT.md) for run links and final UI/launch status. These separate categories do not establish physical-device, shared capability, audible-output or IPA success. Follow README commands; both core and UI bundles belong to the scheme.
+See [implementation report](IMPLEMENTATION_REPORT.md) for run links and final UI/launch status. These separate categories do not establish physical-device, shared capability, audible-output or IPA success. Follow README commands; both core and UI bundles belong to the scheme. Run #20 compiled with Xcode 16.4 / Simulator SDK 18.5 and executed on iPhone SE (3rd generation), iOS Simulator runtime 26.2. This is not a test result for an iOS 18 runtime.
 
 ## Device acceptance checklist
 

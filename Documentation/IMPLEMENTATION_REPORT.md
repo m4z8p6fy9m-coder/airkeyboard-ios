@@ -23,18 +23,18 @@ This report supersedes earlier Windows-only status notes. Native code was actual
 | Python packaging/configuration/selection tests | 18 passed locally and on GitHub Ubuntu; synthetic fixtures establish validators only |
 | Windows executable | Framework build succeeded locally and on GitHub Windows; 7 self-tests passed; actual WinForms rendering reviewed |
 | macOS Foundation source tests | 16 passed via swift test on Xcode 16.4 runner |
-| Simulator compilation | App, keyboard, widget/control built against iOS Simulator 18.5 with CODE_SIGNING_ALLOWED=NO |
+| Simulator compilation | App, keyboard, widget/control built against iOS Simulator SDK 18.5 with CODE_SIGNING_ALLOWED=NO |
 | iOS Simulator Core XCTest | 16 passed in run #20 |
 | App UI save/relaunch test | Passed in run #20: both preview appearances, create/save, terminate/relaunch and find the persisted theme (66.154 seconds) |
 | Signed device build | Not produced |
 | Installable iPhone IPA | Not produced |
 | Physical iPhone/USB install/typing/audio | Not tested |
 
-[Run #20](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39634992350), tested commit `f17568818222115c671249bb2612e3ebff38f5d6`, completed successfully on 2026-10-21. Xcode 16.4 (16F6), ARM64 host, iOS Simulator SDK 18.5. Both sets of 16 Foundation cases passed, and the expanded real-app UI workflow passed in 66.154 seconds. The same core cases run on two platforms; they are not 32 distinct tests. Source and Windows jobs also passed.
+[Run #20](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39634992350), tested commit `f17568818222115c671249bb2612e3ebff38f5d6`, completed successfully on 2026-10-21. Xcode 16.4 (16F6), ARM64 host, iOS Simulator SDK 18.5; actual execution destination: iPhone SE (3rd generation), runtime iOS 26.2. SDK and runtime versions are different and are recorded separately. iOS 18 runtime execution is not established by this run. Both sets of 16 Foundation cases passed, and the expanded real-app UI workflow passed in 66.154 seconds. The same core cases run on two platforms; they are not 32 distinct tests. Source and Windows jobs also passed.
 
 The workflow bounds daemon startup and every Xcode command, initializes CoreSimulator immediately before each invocation, boots in a dedicated YAML step, disables post-test diagnostic collection and sets a 25-minute job limit. The verified standard ARM64 runner remains in use; the retiring macos-14 image is not reintroduced. Build/boot/test outcomes and logs are separate, and the Simulator app is archived before runtime tests.
 
-The current artifact was downloaded and its SHA-256 matched GitHub's `2774467f507f4ddf1221c3dd53a438531107e5e89acb931537b2e8f35f881b1d`; ZIP integrity passed. The post-test Home Screen snapshot is not relabeled as editor artwork. An authentic Studio capture is attached inside the XCTest bundle; README media deliberately remain labeled placeholders.
+The current artifact was downloaded and its SHA-256 matched GitHub's `2774467f507f4ddf1221c3dd53a438531107e5e89acb931537b2e8f35f881b1d`; ZIP integrity passed. The post-test Home Screen snapshot is not relabeled as editor artwork. The authentic Studio capture was extracted byte-for-byte from the XCTest bundle and is shown in the README with source/hash provenance. The demo GIF remains an explicitly labeled placeholder.
 
 The only app-code change in this maintenance work is StudioView: an independent light/dark preview context, SF Symbols and a rounded surround. Theme tokens, persistence and keyboard/widget code are unchanged. The preview remains directly bound to editor state. The UI test targets the actual trailing switch control and waits up to three seconds for each expected accessibility value. The first expanded test failed at its row-center tap; that failure remains visible in Actions. No assertion was removed to obtain the green run.
 

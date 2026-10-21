@@ -10,9 +10,9 @@ Native SwiftUI theme studio and library, UIKit keyboard, six original themes, or
 
 ## Verification
 
-[Successful run #20](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39634992350), code commit `f17568818222115c671249bb2612e3ebff38f5d6`: all Simulator products compiled, 16 Foundation tests passed on macOS and separately on iOS Simulator, and one real-app preview-toggle/create/save/relaunch UI test passed in 66.154 seconds. Standard ARM64 runner, Xcode 16.4, iOS Simulator 18.5. These are separate source/runtime checks, not physical-device verification.
+[Successful run #20](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39634992350), code commit `f17568818222115c671249bb2612e3ebff38f5d6`: all Simulator products compiled, 16 Foundation tests passed on macOS and separately on iOS Simulator, and one real-app preview-toggle/create/save/relaunch UI test passed in 66.154 seconds. Standard ARM64 runner, Xcode 16.4, Simulator SDK 18.5, execution on iOS Simulator 26.2 (iPhone SE, 3rd generation). These are separate source/runtime checks, not physical-device verification.
 
-CI includes CoreSimulator initialization, a dedicated boot step, command timeouts, no post-test diagnostic collection and a 25-minute job limit. The README exposes the live CI status and explicit evidence. Logo uses the project's own icon; demo/studio media remain clearly labeled placeholders, not product captures.
+CI includes CoreSimulator initialization, a dedicated boot step, command timeouts, no post-test diagnostic collection and a 25-minute job limit. The README exposes the live CI status and explicit evidence. Logo uses the project's own icon; the demo GIF remains a clearly labeled placeholder; the Studio image is an authentic, unedited Simulator capture from run #20 with documented provenance.
 
 ## Limited Studio polish
 
