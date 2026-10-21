@@ -6,6 +6,8 @@
 
 Status: Release-Entwurf; noch keine veröffentlichte Geräteversion.
 
+Aktueller Nachweis: [Lauf #20](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39634992350), Commit `f17568818222115c671249bb2612e3ebff38f5d6`: alle drei CI-Jobs grün, einschließlich des erweiterten Studio-UI-Tests (66,154 Sekunden). Der Draft bleibt unveröffentlicht.
+
 ### Foundation
 
 - Native SwiftUI-App mit Theme-Studio, sechs eigenen Themes, JSON-Import/-Export und lokaler Bibliothek.
@@ -29,7 +31,7 @@ Status: Release-Entwurf; noch keine veröffentlichte Geräteversion.
 
 - Sofortige Theme-Vorschau bleibt direkt an den Editor-State gebunden; kein manueller Reload.
 - Lokaler Hell/Dunkel-Vorschaukontext mit SF-Symbolen und abgerundetem Rahmen. Er verändert weder das gespeicherte Theme noch seine Palette; die bestehende Appearance-Auswahl bleibt erhalten.
-- Bestehender realer UI-Workflow prüft zusätzlich beide Schalterstellungen und legt eine echte Studio-Aufnahme im XCTest-Ergebnis ab. Die Schalterprüfung wartet begrenzt auf den tatsächlichen Accessibility-Wert, statt unmittelbar nach dem Tap einen alten Snapshot auszuwerten. Verifikationsstatus nach dem aktuellen CI-Lauf beurteilen.
+- Bestehender realer UI-Workflow prüft zusätzlich beide Schalterstellungen und legt eine echte Studio-Aufnahme im XCTest-Ergebnis ab. Die UI-Prüfung trifft die Schalterfläche relativ zum Accessibility-Element statt die Zeilenmitte und wartet begrenzt auf den tatsächlichen Wert. Der erste erweiterte Lauf deckte eine unzuverlässige Tap-Zielwahl auf; fehlgeschlagene Läufe bleiben in Actions sichtbar. Beide Zustandswechsel sowie Speichern/Neustart wurden anschließend in Lauf #20 erfolgreich geprüft.
 
 ### Vor Gerätefreigabe offen
 

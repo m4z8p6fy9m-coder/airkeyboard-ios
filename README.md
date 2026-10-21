@@ -85,13 +85,13 @@ Tastaturgestaltung soll ohne Abo und ohne Cloud-Zwang möglich sein. AirKeyboard
 
 ## ✅ Verification Status
 
-**Beleg:** [erfolgreicher Lauf #17 vom 21.10.2026](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39623141955), Commit [`c3d373e`](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/commit/c3d373e31fc6b48831ad8a710dc7ac6d33ed88ff), Xcode 16.4 / iOS Simulator 18.5. Ein Badge ersetzt diesen konkreten Nachweis nicht.
+**Beleg:** [erfolgreicher Lauf #20 vom 21.10.2026](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39634992350), Commit [`f175688`](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/commit/f17568818222115c671249bb2612e3ebff38f5d6), Xcode 16.4 / iOS Simulator 18.5. Ein Badge ersetzt diesen konkreten Nachweis nicht.
 
 | Bereich | Status | Nachweis / Grenze |
 | --- | --- | --- |
 | Simulator-Build | ✅ Verifiziert | App, UIKit-Tastatur und Widget-/Control-Erweiterung kompiliert; ohne Gerätesignierung. |
 | Foundation XCTest | ✅ 16 Fälle bestanden | Auf macOS und separat im iOS-Simulator ausgeführt; dieselben Core-Fälle, keine 32 unterschiedlichen Tests. |
-| App-UI-Workflow | ✅ 1 Test bestanden | Theme erstellen, speichern, App beenden/neustarten und Theme wiederfinden; 81 Sekunden im genannten Lauf. |
+| App-UI-Workflow | ✅ 1 Test bestanden | Helle/dunkle Vorschau schalten, Theme erstellen, speichern, App beenden/neustarten und Theme wiederfinden; 66 Sekunden im genannten Lauf. |
 | Portable Prüfungen / Windows | ✅ CI bestanden | Repository-/Packaging-Prüfungen und kompilierter Windows-Helfer mit sieben Selbsttests. |
 | Physisches iPhone / Installation | ⏳ Offen | Kein Geräte-Build, keine gültig signierte IPA, kein USB-Installationserfolg nachgewiesen. |
 | Audio auf Hardware | ⏳ Offen | Hörbare Ausgabe, Stummschalter, Full Access, Audio-Routen und Latenz noch prüfen. |
