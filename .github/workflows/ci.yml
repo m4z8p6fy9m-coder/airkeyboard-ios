@@ -21,16 +21,62 @@ jobs:
           python3 -m unittest discover -s Tests/Packaging -v
   simulator:
     if: github.event.repository.private == false
-    runs-on: macos-15-intel
-    timeout-minutes: 30
+    # Standard ARM64 runner (not -large/-xlarge). macos-14 retires on 2026-11-02.
+    runs-on: macos-15
+    timeout-minutes: 25
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect free Apple toolchain
-        run: xcodebuild -version
+      - name: Wake up CoreSimulator and inspect pinned Xcode
+        timeout-minutes: 2
+        run: |
+          python3 Scripts/ci_command.py --timeout 60 --log build/evidence/toolchain.txt xcodebuild -version
+          uname -m | tee build/evidence/runner-architecture.txt
       - name: Run Foundation source tests
-        run: swift test
-      - name: Build and test all native simulator targets, install and launch the app
-        run: bash Scripts/simulator_build.sh
+        timeout-minutes: 3
+        run: python3 Scripts/ci_command.py --timeout 150 --log build/evidence/foundation-tests.log swift test
+      - name: Build and archive all unsigned simulator products
+        id: build
+        timeout-minutes: 8
+        run: bash Scripts/simulator_build.sh build
+      - name: Select an eligible iPhone Simulator
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          python3 Scripts/select_simulator.py | tee build/evidence/simulator-selection.txt >> "$GITHUB_ENV"
+      - name: Boot Simulator
+        id: boot
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          echo "Booting Simulator $SIMULATOR_UDID"
+          python3 Scripts/ci_command.py --timeout 30 --log build/evidence/simulator-boot-request.log xcrun simctl boot "$SIMULATOR_UDID" || true
+          python3 Scripts/ci_command.py --timeout 180 --log build/evidence/simulator-boot-status.log xcrun simctl bootstatus "$SIMULATOR_UDID" -b
+          sleep 8
+      - name: Run core and real-app UI tests without diagnostic collection
+        id: tests
+        timeout-minutes: 8
+        run: bash Scripts/simulator_build.sh test
+      - name: Capture bounded failure diagnostics
+        if: failure() || cancelled()
+        timeout-minutes: 2
+        continue-on-error: true
+        run: |
+          python3 Scripts/ci_command.py --timeout 30 --log build/evidence/failure-devices.json xcrun simctl list devices -j
+          python3 Scripts/ci_command.py --timeout 30 --log build/evidence/failure-runtimes.json xcrun simctl list runtimes -j
+      - name: Record separate build and runtime outcomes
+        if: always()
+        run: |
+          {
+            echo '### AirKeyboard Simulator verification'
+            echo '| Stage | Outcome |'
+            echo '| --- | --- |'
+            echo '| Simulator build | ${{ steps.build.outcome }} |'
+            echo '| Explicit boot | ${{ steps.boot.outcome }} |'
+            echo '| Core/UI tests | ${{ steps.tests.outcome }} |'
+            echo 'Simulator artifacts are not signed device builds or installable iPhone IPAs.'
+          } >> "$GITHUB_STEP_SUMMARY"
       - name: Save simulator evidence (not an iPhone IPA)
         if: always()
         uses: actions/upload-artifact@v4
