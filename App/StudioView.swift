@@ -6,12 +6,25 @@ struct StudioView: View {
     @State var theme: Theme
     @State private var saved = false
     @State private var reset = false
+    @State private var previewDark = true
     @FocusState private var nameFocused: Bool
     var body: some View {
         Form {
             Section {
-                KeyboardPreview(theme: theme) { model.previewSound(theme.soundPack) }.listRowInsets(EdgeInsets())
-            } footer: { Text("Tap keys to try the design. Audio previews respect device mute and your volume preferences.") }
+                VStack(spacing: 12) {
+                    Toggle(isOn: $previewDark) {
+                        Label("Dark preview", systemImage: previewDark ? "moon.fill" : "sun.max.fill")
+                    }.accessibilityIdentifier("studio.preview.dark")
+                    KeyboardPreview(theme: theme) { model.previewSound(theme.soundPack) }
+                }
+                .padding(12)
+                .background(previewDark ? Color(red: 0.06, green: 0.09, blue: 0.12) : Color(red: 0.96, green: 0.97, blue: 0.98),
+                            in: RoundedRectangle(cornerRadius: 20))
+                .environment(\.colorScheme, previewDark ? .dark : .light)
+                .listRowInsets(EdgeInsets())
+            } footer: {
+                Text("Changes appear live. Light/dark changes the preview surroundings and keeps your chosen key colors. Audio previews respect device mute and volume preferences.")
+            }
             Section("Identity") {
                 TextField("Name", text: $theme.name)
                     .focused($nameFocused).submitLabel(.done).onSubmit { nameFocused = false }
@@ -41,6 +54,7 @@ struct StudioView: View {
                 Button("Reset design", role: .destructive) { reset = true }
             }
         }
+        .onAppear { previewDark = theme.appearance == .dark }
         .navigationTitle("Keyboard Studio").navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
