@@ -42,7 +42,21 @@ def compatible_runtime(runtimes, sdk):
     return max(candidates)[1]
 
 def run(*args):
-    return subprocess.check_output(args, stderr=subprocess.STDOUT, text=True)
+    if Path(args[0]).name == 'xcodebuild':
+        import contextlib
+        from ci_command import execute
+        log = Path(__file__).resolve().parents[1] / 'build/evidence/simulator-destinations.txt'
+        with contextlib.redirect_stdout(sys.stderr):
+            code = execute(list(args), 90, log)
+        output = log.read_text(encoding='utf-8')
+        if code:
+            raise subprocess.CalledProcessError(code, args, output=output)
+        return output
+    try:
+        return subprocess.check_output(args, stderr=subprocess.STDOUT, text=True, timeout=60)
+    except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as error:
+        print(f'::error::Simulator command failed: {args}; {error.output}', file=sys.stderr)
+        raise
 
 if __name__ == '__main__':
     root = Path(__file__).resolve().parents[1]
