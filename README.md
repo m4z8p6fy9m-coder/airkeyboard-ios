@@ -28,7 +28,7 @@ Die vorgesehenen Aufnahmen zeigen später das Bearbeiten eines Themes und die in
 | Feature | Beschreibung |
 | --- | --- |
 | Native Tastatur | UIKit-Tastatur mit Texteingabe, Shift/Caps Lock, Zahlen, Symbolen, Löschen und Globe-Wechsel; nur in von iOS unterstützten Eingabefeldern. |
-| Theme-Studio | Sechs eigene Themes; Farben, Form, Abstände, Schrift und QWERTY/QWERTZ bearbeiten, Designs duplizieren und favorisieren. |
+| Theme-Studio | Sechs eigene Themes; Farben, Form, Abstände, Schrift und QWERTY/QWERTZ bearbeiten, Designs duplizieren und favorisieren. Die direkt gebundene Vorschau hat einen separaten Hell/Dunkel-Kontext mit unveränderter Palette. |
 | Theme-Dateien | Validierter JSON-Import/-Export, lokale Bibliothek, atomare Speicherung und Wiederherstellung der letzten gültigen Sicherung. |
 | Sound-Packs | Vier eigene kurze WAV-Packs plus Silent; App-Vorschau und optionaler Tastaturton mit Full Access. Hardware-Audio noch ungeprüft. |
 | Widgets und Controls | WidgetKit-Themes und unterstützter Control-Center-Schalter für die Sound-Präferenz. Gemeinsame Einstellungen benötigen eine tatsächlich verfügbare App Group. |

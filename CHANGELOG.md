@@ -25,6 +25,12 @@ Status: Release-Entwurf; noch keine veröffentlichte Geräteversion.
 - Eindeutig markierte `assets/demo.gif`- und `assets/theme-studio.png`-Platzhalter; keine simulierten Produktaufnahmen. Vorläufiges Logo aus dem eigenen App-Icon; Herkunft in ASSETS.md.
 - Bug-/Feature-Vorlagen, PR-Checkliste und Good-First-Issue-Einstieg.
 
+### Theme-Studio-Polish
+
+- Sofortige Theme-Vorschau bleibt direkt an den Editor-State gebunden; kein manueller Reload.
+- Lokaler Hell/Dunkel-Vorschaukontext mit SF-Symbolen und abgerundetem Rahmen. Er verändert weder das gespeicherte Theme noch seine Palette; die bestehende Appearance-Auswahl bleibt erhalten.
+- Bestehender realer UI-Workflow prüft zusätzlich beide Schalterstellungen und legt eine echte Studio-Aufnahme im XCTest-Ergebnis ab. Verifikationsstatus nach dem aktuellen CI-Lauf beurteilen.
+
 ### Vor Gerätefreigabe offen
 
 - Physisches iPhone, gültige Gerätesignierung/Installation und echte Host-Eingaben.
