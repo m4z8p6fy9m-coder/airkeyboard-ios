@@ -11,6 +11,17 @@ final class ThemeWorkflowTests: XCTestCase {
         let create = app.navigationBars["Themes"].buttons["New theme"]
         XCTAssertTrue(create.waitForExistence(timeout: 10))
         create.tap()
+        let preview = app.switches["studio.preview.dark"]
+        XCTAssertTrue(preview.waitForExistence(timeout: 10))
+        XCTAssertEqual(preview.value as? String, "1")
+        preview.tap()
+        XCTAssertEqual(preview.value as? String, "0", "Preview must switch without reloading the editor")
+        let studio = XCTAttachment(screenshot: app.screenshot())
+        studio.name = "Theme Studio light preview"
+        studio.lifetime = .keepAlways
+        add(studio)
+        preview.tap()
+        XCTAssertEqual(preview.value as? String, "1")
         let name = app.textFields["Name"]
         XCTAssertTrue(name.waitForExistence(timeout: 10))
         let title = "CI Theme " + String(UUID().uuidString.prefix(8))
