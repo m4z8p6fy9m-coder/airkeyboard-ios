@@ -13,15 +13,20 @@ final class ThemeWorkflowTests: XCTestCase {
         create.tap()
         let preview = app.switches["studio.preview.dark"]
         XCTAssertTrue(preview.waitForExistence(timeout: 10))
-        XCTAssertEqual(preview.value as? String, "1")
+        func expectPreviewValue(_ value: String) {
+            let changed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", value), object: preview)
+            XCTAssertEqual(XCTWaiter.wait(for: [changed], timeout: 3), .completed,
+                           "Preview must expose \(value) without reloading; observed \(String(describing: preview.value))")
+        }
+        expectPreviewValue("1")
         preview.tap()
-        XCTAssertEqual(preview.value as? String, "0", "Preview must switch without reloading the editor")
+        expectPreviewValue("0")
         let studio = XCTAttachment(screenshot: app.screenshot())
         studio.name = "Theme Studio light preview"
         studio.lifetime = .keepAlways
         add(studio)
         preview.tap()
-        XCTAssertEqual(preview.value as? String, "1")
+        expectPreviewValue("1")
         let name = app.textFields["Name"]
         XCTAssertTrue(name.waitForExistence(timeout: 10))
         let title = "CI Theme " + String(UUID().uuidString.prefix(8))
