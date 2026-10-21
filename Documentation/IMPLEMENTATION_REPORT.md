@@ -1,6 +1,6 @@
 # Implementation and verification report
 
-Date: 2026-10-20. Public MIT source: https://github.com/m4z8p6fy9m-coder/airkeyboard-ios.
+Updated: 2026-10-21. Public MIT source: https://github.com/m4z8p6fy9m-coder/airkeyboard-ios.
 
 This report supersedes earlier Windows-only status notes. Native code was actually compiled and executed on a standard public GitHub macOS runner, without an Apple certificate, provisioning profile or paid build service.
 
@@ -24,19 +24,25 @@ This report supersedes earlier Windows-only status notes. Native code was actual
 | Windows executable | Framework build succeeded locally and on GitHub Windows; 7 self-tests passed; actual WinForms rendering reviewed |
 | macOS Foundation source tests | 16 passed via swift test on Xcode 16.4 runner |
 | Simulator compilation | App, keyboard, widget/control built against iOS Simulator 18.5 with CODE_SIGNING_ALLOWED=NO |
-| iOS Simulator Core XCTest | 16 passed in run #13 |
-| App UI save/relaunch test | Retesting navigation-bar Save action in run #14; not yet claimed passed |
+| iOS Simulator Core XCTest | 16 passed in run #17 |
+| App UI save/relaunch test | Passed in run #17: create, save, terminate/relaunch and find the persisted theme (81.034 seconds) |
 | Signed device build | Not produced |
 | Installable iPhone IPA | Not produced |
 | Physical iPhone/USB install/typing/audio | Not tested |
 
-[Run #13](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39484433729) established native compilation and both sets of 16 core tests. Its UI automation exposed an unreachable Save button under editing/scrolling. The editor now keeps Save in the navigation bar and dismisses name-field focus; [run #14](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39486335890) validates that correction. Simulator smoke installation/launch and artifact packaging now precede UI tests so a UI failure cannot hide an already built product.
+[Run #17](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/actions/runs/39623141955), tested commit `c3d373e31fc6b48831ad8a710dc7ac6d33ed88ff`, completed successfully on 2026-10-21. Xcode 16.4 (16F6), ARM64 host, iOS Simulator SDK 18.5. The Simulator job took 9m10s; the complete workflow took 9m24s. Both sets of 16 Foundation cases passed, and the real-app UI workflow passed in 81.034 seconds. The same 16 core cases run on two platforms; they are not 32 distinct tests.
 
-Earlier real CI failures were fixed: iOS 18 package declaration under Swift tools 5.9 and an overly complex SoundsView expression. Runner selection uses actual eligible Xcode destinations, excluding incompatible preinstalled runtimes.
+The public workflow now bounds daemon startup and every Xcode command, initializes CoreSimulator immediately before each invocation, boots the selected device in a dedicated YAML step, disables post-test diagnostic collection and sets a 25-minute job limit. The universal Simulator app is archived before runtime tests, so a later failure does not hide a successful build. Build/boot/test outcomes and logs are separate. No test is silently skipped to manufacture a green result.
+
+The Simulator artifact was downloaded and its SHA-256 matched GitHub's `db6ae08cfd1385fe169ee7ccf1a57f643808f8426cf091faac8b9d0119bac606`. ZIP integrity and both embedded extensions were checked. The post-test screen capture is a Home Screen image; it is not evidence of the editor's appearance. README media are explicitly labeled placeholders pending authentic captures.
+
+## Open-source presentation
+
+The v0.1.0 Simulator Foundation draft adds a concise README, live repository badges, asset provenance, CHANGELOG.md, issue/PR templates and a Good First Issues contribution path. These do not establish device compatibility. Every entry links to actual evidence or remains explicitly pending.
 
 ## Free-first policy and remaining limits
 
-Active Actions use only standard Ubuntu, macos-15-intel and Windows runners in a public repository, with no signing secrets and one-day artifact retention. No paid dependency, subscription, mandatory backend, premium runner or cloud Mac is configured. The certificate-required hosted workflow was removed. The optional device-package workflow produces re-signing input only after actual device compilation; it has not established a device result.
+Active Actions use only standard Ubuntu, macos-15 (standard ARM64) and Windows runners in a public repository, with no signing secrets and one-day artifact retention. No paid dependency, subscription, mandatory backend, premium runner or cloud Mac is configured. The certificate-required hosted workflow was removed. The optional device-package workflow produces re-signing input only after actual device compilation; it has not established a device result.
 
 Free Personal Team testing on an existing/borrowed Mac is documented with expiry/capability limits. Local mode deliberately gives up cross-target theme/control synchronization when App Groups cannot be provisioned. No identity, profile or entitlement authority is fabricated. Simulator apps are never represented as iPhone IPAs.
 

@@ -6,7 +6,7 @@
 - 18 Python tests: 7 packager, 5 optional profile-validator, 3 free configuration and 3 eligible Simulator selection tests. Synthetic profile/Mach-O fixtures are not real credentials or installable applications.
 - 7 Windows companion tests; actual framework compilation locally and in Windows CI. The WinForms surface was rendered/reviewed.
 - 16 Foundation tests passed via macOS `swift test` and 16 passed in iOS Simulator XCTest. They cover codec validation, library recovery, settings, keyboard state and isolated local persistence.
-- App, UIKit keyboard and widget/control compiled against the Simulator SDK without device signing. Real-app UI workflow is being retested after making Save & apply permanently reachable.
+- App, UIKit keyboard and widget/control compiled against the Simulator SDK without device signing. The real-app create/save/relaunch workflow passed in run #17, with Save & apply reachable in the navigation bar.
 
 See [implementation report](IMPLEMENTATION_REPORT.md) for run links and final UI/launch status. These separate categories do not establish physical-device, shared capability, audible-output or IPA success. Follow README commands; both core and UI bundles belong to the scheme.
 
