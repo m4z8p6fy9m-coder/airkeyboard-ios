@@ -121,7 +121,7 @@ Windows kann portable Prüfungen und den [Windows-Helfer](Desktop/Windows/README
 
 Kleine, nachvollziehbar geprüfte Beiträge sind willkommen. Lies [CONTRIBUTING.md](CONTRIBUTING.md) und die dortigen **Good First Issues**; beginne mit [Issues mit dem Label `good first issue`](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/issues?q=is%3Aissue%20is%3Aopen%20label%3A%22good%20first%20issue%22).
 
-[Bug melden](.github/ISSUE_TEMPLATE/bug_report.md) · [Feature vorschlagen](.github/ISSUE_TEMPLATE/feature_request.md) · [Pull-Request-Checkliste](.github/PULL_REQUEST_TEMPLATE.md) · [Code of Conduct](CODE_OF_CONDUCT.md) · [Sicherheitsmeldungen](SECURITY.md).
+[Bug melden](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/issues/new?template=bug_report.md) · [Feature vorschlagen](https://github.com/m4z8p6fy9m-coder/airkeyboard-ios/issues/new?template=feature_request.md) · [Pull-Request-Checkliste](.github/PULL_REQUEST_TEMPLATE.md) · [Code of Conduct](CODE_OF_CONDUCT.md) · [Sicherheitsmeldungen](SECURITY.md).
 
 ## 📚 Dokumentation
 

@@ -29,7 +29,7 @@ Status: Release-Entwurf; noch keine veröffentlichte Geräteversion.
 
 - Sofortige Theme-Vorschau bleibt direkt an den Editor-State gebunden; kein manueller Reload.
 - Lokaler Hell/Dunkel-Vorschaukontext mit SF-Symbolen und abgerundetem Rahmen. Er verändert weder das gespeicherte Theme noch seine Palette; die bestehende Appearance-Auswahl bleibt erhalten.
-- Bestehender realer UI-Workflow prüft zusätzlich beide Schalterstellungen und legt eine echte Studio-Aufnahme im XCTest-Ergebnis ab. Verifikationsstatus nach dem aktuellen CI-Lauf beurteilen.
+- Bestehender realer UI-Workflow prüft zusätzlich beide Schalterstellungen und legt eine echte Studio-Aufnahme im XCTest-Ergebnis ab. Die Schalterprüfung wartet begrenzt auf den tatsächlichen Accessibility-Wert, statt unmittelbar nach dem Tap einen alten Snapshot auszuwerten. Verifikationsstatus nach dem aktuellen CI-Lauf beurteilen.
 
 ### Vor Gerätefreigabe offen
 
