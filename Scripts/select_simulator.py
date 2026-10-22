@@ -6,9 +6,10 @@ import sys
 import time
 import subprocess
 
-def choose_destination(output):
+def choose_destination(output, sdk=None):
     marker = 'Available destinations for the "AirKeyboard" scheme:'
     available = output.partition(marker)[2].partition('Ineligible destinations')[0]
+    ceiling = tuple(map(int, sdk.split('.'))) + (0,) * (3 - len(sdk.split('.'))) if sdk else None
     candidates = []
     for body in re.findall(r'\{([^{}]+)\}', available):
         values = {}
@@ -22,7 +23,8 @@ def choose_destination(output):
         if not re.fullmatch(r'[0-9A-Fa-f-]{36}', identifier) or not re.fullmatch(r'\d+(?:\.\d+)*', version):
             continue
         parsed = tuple(map(int, version.split('.')))
-        if parsed[0] >= 18:
+        parsed += (0,) * (3 - len(parsed))
+        if parsed[0] >= 18 and (ceiling is None or parsed <= ceiling):
             candidates.append((parsed, values['name'], identifier))
     if not candidates:
         raise ValueError('No eligible iPhone Simulator with iOS 18+ for the selected Xcode. Install a compatible runtime.')
@@ -64,10 +66,12 @@ if __name__ == '__main__':
     evidence.mkdir(parents=True, exist_ok=True)
     command = ['xcodebuild', '-project', str(root / 'AirKeyboard.xcodeproj'),
                '-scheme', 'AirKeyboard', '-showdestinations']
+    sdk = run('xcrun', '--sdk', 'iphonesimulator', '--show-sdk-version').strip()
+    print('Selecting an iPhone runtime no newer than SDK ' + sdk, file=sys.stderr)
     output = run(*command)
     (evidence / 'simulator-destinations.txt').write_text(output)
     try:
-        identifier = choose_destination(output)
+        identifier = choose_destination(output, sdk)
     except ValueError:
         # New runner images can have a compatible runtime but no pre-created device.
         runtimes = run('xcrun', 'simctl', 'list', 'runtimes', '-j')
@@ -75,7 +79,7 @@ if __name__ == '__main__':
         (evidence / 'simulator-runtimes.json').write_text(runtimes)
         (evidence / 'simulator-device-types.json').write_text(types)
         runtime = compatible_runtime(json.loads(runtimes)['runtimes'],
-                                     run('xcrun', '--sdk', 'iphonesimulator', '--show-sdk-version').strip())
+                                     sdk)
         runtime_value = next(r for r in json.loads(runtimes)['runtimes'] if r['identifier'] == runtime)
         version = list(map(int, runtime_value['version'].split('.')))
         version += [0] * (3 - len(version))
@@ -91,7 +95,7 @@ if __name__ == '__main__':
             output = run(*command)
             (evidence / 'simulator-destinations.txt').write_text(output)
             try:
-                identifier = choose_destination(output)
+                identifier = choose_destination(output, sdk)
                 break
             except ValueError:
                 if attempt == 2:
