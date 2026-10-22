@@ -47,22 +47,24 @@ struct SetupView: View {
 
 struct IntegrationsView: View {
     @EnvironmentObject private var model: AppModel
+    @Environment(\.colorScheme) private var colorScheme
+    private var theme: Theme { model.settings.theme.resolved(dark: colorScheme == .dark) }
     var body: some View {
         List {
             Section("In-app widget preview") {
                 VStack(alignment: .leading, spacing: 12) {
                     Label("AirKeyboard", systemImage: "keyboard").font(.caption)
-                    Text(model.settings.theme.name).font(.title3.bold())
+                    Text(theme.name).font(.title3.bold())
                     HStack {
                         ForEach(["A", "I", "R"], id: \.self) { key in
                             Text(key).font(.title2).frame(maxWidth: .infinity, minHeight: 44)
-                                .background(Color(hex: model.settings.theme.key), in: RoundedRectangle(cornerRadius: model.settings.theme.cornerRadius))
+                                .background(ThemeKeySurface(theme: theme, special: false, pressed: false, forceOpaque: true))
                         }
                     }
                     Text(model.settings.sound.enabled ? model.settings.sound.pack.title : "Sounds off").font(.caption)
                 }
-                .padding().foregroundStyle(Color(hex: model.settings.theme.primary))
-                .background(Color(hex: model.settings.theme.background), in: RoundedRectangle(cornerRadius: 18))
+                .padding().foregroundStyle(Color(hex: theme.primary))
+                .background(Color(hex: theme.background), in: RoundedRectangle(cornerRadius: 18))
             }
             Section("Control Center · iOS 18+") {
                 Toggle("Keyboard sounds preference", isOn: Binding(get: { model.settings.sound.enabled }, set: { enabled in
