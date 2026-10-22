@@ -29,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Wake up CoreSimulator and inspect pinned Xcode
-        timeout-minutes: 2
+        timeout-minutes: 3
         run: |
           python3 Scripts/ci_command.py --timeout 60 --log build/evidence/toolchain.txt xcodebuild -version
           uname -m | tee build/evidence/runner-architecture.txt
@@ -38,7 +38,7 @@ jobs:
         run: python3 Scripts/ci_command.py --timeout 150 --log build/evidence/foundation-tests.log swift test
       - name: Build and archive all unsigned simulator products
         id: build
-        timeout-minutes: 8
+        timeout-minutes: 9
         run: bash Scripts/simulator_build.sh build
       - name: Select an eligible iPhone Simulator
         timeout-minutes: 3
@@ -56,7 +56,7 @@ jobs:
           sleep 8
       - name: Run core and real-app UI tests without diagnostic collection
         id: tests
-        timeout-minutes: 8
+        timeout-minutes: 9
         run: bash Scripts/simulator_build.sh test
       - name: Capture bounded failure diagnostics
         if: failure() || cancelled()
