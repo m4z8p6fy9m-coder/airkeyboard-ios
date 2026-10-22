@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "title": "Premium iOS Keyboard Themes",
+  "language": "de-DE",
+  "designIntent": "Vier eigenständige Oberflächen auf einer vertrauten, systemnahen iPhone-Tastatur. Theme-Wechsel ändern Farben und Oberflächen, niemals die Tastenlogik oder das Layout.",
+  "references": [
+    {
+      "title": "Apple Human Interface Guidelines - Color",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/color"
+    },
+    {
+      "title": "Apple Human Interface Guidelines - Dark Mode",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/dark-mode"
+    },
+    {
+      "title": "Apple Human Interface Guidelines - Materials",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/materials"
+    },
+    {
+      "title": "Community discussion - theme readability and customization (anecdotal feedback)",
+      "url": "https://www.reddit.com/r/Swiftkey/comments/1tz1sok/feedback_on_themes_readability_and_customization/"
+    },
+    {
+      "title": "Community discussion - iPhone keyboard layout and usability (anecdotal feedback)",
+      "url": "https://www.reddit.com/r/ios/comments/1jvn3e1/will_ios_ever_allow_better_keyboards/"
+    }
+  ],
+  "implementationPrinciples": [
+    "Keep the existing keyboard model, input handling, row layout, prediction bar, shift/delete behavior, return-key logic, accessibility identifiers, and extension lifecycle intact.",
+    "Use the current project's geometry as the source of truth. Do not hard-code a single iPhone width or fixed total keyboard height.",
+    "Use colors consistently by semantic role. Accent colors are primarily for theme selection and small interactive indicators, not every key.",
+    "For small keyboard labels, target at least 4.5:1 contrast and test with Increase Contrast and Reduce Transparency.",
+    "Slate Glass must remain readable if system transparency is reduced or material rendering is unavailable; provide an opaque fallback.",
+    "No neon, rainbow gradients, heavy shadows, fake 3D keycaps, ornamental labels, or oversized animations."
+  ],
+  "geometry": {
+    "layoutReference": "Follow the familiar Apple iOS keyboard hierarchy and the project's existing key placement exactly.",
+    "horizontalInsetPt": {
+      "recommended": 3,
+      "note": "Use existing value if already tuned."
+    },
+    "horizontalKeyGapPt": {
+      "recommendedRange": [
+        3,
+        5
+      ]
+    },
+    "verticalRowGapPt": {
+      "recommendedRange": [
+        7,
+        9
+      ]
+    },
+    "letterKeyCornerRadiusPt": {
+      "recommendedRange": [
+        5,
+        7
+      ]
+    },
+    "specialKeyCornerRadiusPt": {
+      "recommendedRange": [
+        5,
+        7
+      ]
+    },
+    "hairlineBorderPt": 0.5,
+    "pressedFeedbackDurationMs": {
+      "recommendedRange": [
+        80,
+        140
+      ]
+    },
+    "keyLabelFont": "Use the project's existing system font sizing. If rebuilding, start with a system font around 19-21 pt for letter keys and validate on compact/large iPhones.",
+    "rows": [
+      "Prediction/suggestion strip only if already supported by the project.",
+      "QWERTZ row including German characters according to the active language layout.",
+      "ASDF row.",
+      "Shift + ZXCV row + Delete.",
+      "Bottom row preserves existing 123/globe-or-emoji/space/return/microphone controls and widths."
+    ]
+  },
+  "shared": {
+    "accentColor": "#0A84FF",
+    "separatorColor": "#727985",
+    "symbolStyle": "SF Symbols or the project's existing system-style vector icons; do not replace controls with emoji.",
+    "specialKeyRule": "Special keys are distinct through a restrained tone difference, not bright colored fills.",
+    "pressedStateRule": "Use a subtle role-specific fill shift or a dark/white overlay; keep labels stable and legible.",
+    "selectionStateRule": "Show theme selection in the Theme Studio UI, not as persistent decorative marks on live keyboard keys."
+  },
+  "themes": {
+    "cupertino-native": {
+      "displayName": "Cupertino Native",
+      "intent": "The closest match to Apple's familiar keyboard. System-adaptive light and dark appearances, understated separation, no custom decorative effect.",
+      "surfaceStyle": "solid",
+      "light": {
+        "keyboardBackground": "#D5D8E0",
+        "keyBackground": "#FFFFFF",
+        "specialKeyBackground": "#C3C9D4",
+        "keyText": "#17191D",
+        "secondaryText": "#555B66",
+        "keyBorder": "#BCC2CD",
+        "pressedOverlay": "#D3D8E1",
+        "accent": "#0A84FF",
+        "suggestionText": "#252830",
+        "suggestionDivider": "#BEC4CE"
+      },
+      "dark": {
+        "keyboardBackground": "#252629",
+        "keyBackground": "#44464B",
+        "specialKeyBackground": "#34363B",
+        "keyText": "#F5F5F7",
+        "secondaryText": "#C5C7CD",
+        "keyBorder": "#54565C",
+        "pressedOverlay": "#5A5D63",
+        "accent": "#0A84FF",
+        "suggestionText": "#F2F2F7",
+        "suggestionDivider": "#494B51"
+      },
+      "geometryOverrides": {
+        "keyCornerRadiusPt": 5.5,
+        "keyBorderPt": 0.0,
+        "shadow": "none or the existing native-style shadow only"
+      },
+      "notes": [
+        "Prefer semantic UIKit/SwiftUI system colors in production when they match the design; listed HEX values are design targets for previews and regression tests.",
+        "Respect the system appearance automatically."
+      ]
+    },
+    "nord-minimal": {
+      "displayName": "Nord Minimal",
+      "intent": "Distinctive cool blue-gray palette, quiet but not flat, with a restrained icy-cyan accent used sparingly.",
+      "surfaceStyle": "solid",
+      "light": {
+        "keyboardBackground": "#2E3440",
+        "keyBackground": "#3B4252",
+        "specialKeyBackground": "#434C5E",
+        "keyText": "#ECEFF4",
+        "secondaryText": "#D8DEE9",
+        "keyBorder": "#4C566A",
+        "pressedOverlay": "#515D73",
+        "accent": "#88C0D0",
+        "suggestionText": "#E5E9F0",
+        "suggestionDivider": "#434C5E"
+      },
+      "dark": {
+        "keyboardBackground": "#2E3440",
+        "keyBackground": "#3B4252",
+        "specialKeyBackground": "#434C5E",
+        "keyText": "#ECEFF4",
+        "secondaryText": "#D8DEE9",
+        "keyBorder": "#4C566A",
+        "pressedOverlay": "#515D73",
+        "accent": "#88C0D0",
+        "suggestionText": "#E5E9F0",
+        "suggestionDivider": "#434C5E"
+      },
+      "geometryOverrides": {
+        "keyCornerRadiusPt": 6.0,
+        "keyBorderPt": 0.5,
+        "shadow": "very subtle, optional"
+      },
+      "notes": [
+        "Nord remains intentionally dark in both OS appearances; do not automatically remap it to a light palette.",
+        "Use the cyan only for selection/accent details, not for all letter labels."
+      ]
+    },
+    "slate-glass": {
+      "displayName": "Slate Glass",
+      "intent": "A premium, controlled glass look: translucent key surfaces, subtle edge highlights, charcoal base. No bright blur glow.",
+      "surfaceStyle": "material-with-tint-and-opaque-fallback",
+      "light": {
+        "keyboardBackground": "#1D242E",
+        "keyBackground": "#FFFFFF21",
+        "specialKeyBackground": "#FFFFFF30",
+        "keyText": "#F7F9FC",
+        "secondaryText": "#D0D8E2",
+        "keyBorder": "#FFFFFF2B",
+        "pressedOverlay": "#FFFFFF38",
+        "accent": "#9AC8F5",
+        "suggestionText": "#F7F9FC",
+        "suggestionDivider": "#FFFFFF20"
+      },
+      "dark": {
+        "keyboardBackground": "#1D242E",
+        "keyBackground": "#FFFFFF21",
+        "specialKeyBackground": "#FFFFFF30",
+        "keyText": "#F7F9FC",
+        "secondaryText": "#D0D8E2",
+        "keyBorder": "#FFFFFF2B",
+        "pressedOverlay": "#FFFFFF38",
+        "accent": "#9AC8F5",
+        "suggestionText": "#F7F9FC",
+        "suggestionDivider": "#FFFFFF20"
+      },
+      "geometryOverrides": {
+        "keyCornerRadiusPt": 7.0,
+        "keyBorderPt": 0.5,
+        "shadow": "none; let a fine border and material do the work"
+      },
+      "notes": [
+        "HEX alpha suffixes are 8-digit RGBA-style web notation: #RRGGBBAA. Convert carefully if your parser expects #AARRGGBB.",
+        "Apply a SwiftUI Material in the rendering layer, then a restrained translucent tint. Color opacity alone is not blur.",
+        "If Reduce Transparency is enabled or the extension cannot provide reliable material context, switch to an opaque #343B47-like key surface while preserving text contrast.",
+        "Do not blur or obscure the glyphs; the glass effect should be visible mainly in surface edges and soft tonal separation."
+      ]
+    },
+    "midnight-oled": {
+      "displayName": "Midnight OLED",
+      "intent": "True black keyboard surface, graphite keycaps, fine borders and near-white typography. Quiet premium contrast.",
+      "surfaceStyle": "solid",
+      "light": {
+        "keyboardBackground": "#000000",
+        "keyBackground": "#1A1A1A",
+        "specialKeyBackground": "#252525",
+        "keyText": "#F2F2F7",
+        "secondaryText": "#B8B8BD",
+        "keyBorder": "#353535",
+        "pressedOverlay": "#303030",
+        "accent": "#0A84FF",
+        "suggestionText": "#E5E5EA",
+        "suggestionDivider": "#272727"
+      },
+      "dark": {
+        "keyboardBackground": "#000000",
+        "keyBackground": "#1A1A1A",
+        "specialKeyBackground": "#252525",
+        "keyText": "#F2F2F7",
+        "secondaryText": "#B8B8BD",
+        "keyBorder": "#353535",
+        "pressedOverlay": "#303030",
+        "accent": "#0A84FF",
+        "suggestionText": "#E5E5EA",
+        "suggestionDivider": "#272727"
+      },
+      "geometryOverrides": {
+        "keyCornerRadiusPt": 6.0,
+        "keyBorderPt": 0.5,
+        "shadow": "none"
+      },
+      "notes": [
+        "True black applies to the keyboard background only; individual keycaps must remain visibly separated.",
+        "Avoid pure-white text on every secondary label; reserve #F2F2F7 for primary glyphs.",
+        "Treat OLED power savings as a potential benefit of black pixels, not as a guaranteed percentage claim."
+      ]
+    }
+  }
+}

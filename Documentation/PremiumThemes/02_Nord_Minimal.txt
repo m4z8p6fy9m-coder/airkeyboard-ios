@@ -1,0 +1,39 @@
+THEME SPECIFICATION / NORD MINIMAL
+==========================================================
+
+Entsättigtes Blaugrau mit eisigem Text und einem ruhigen Cyan-Akzent.
+
+1. VISUELLE IDENTITÄT
+Eigenständiger, dunkler Look statt bloß grauer Standardtasten. Die visuelle Persönlichkeit kommt aus klaren Blautönen und einer kontrollierten Staffelung der Flächen, nicht aus Glow oder Verläufen.
+
+2. FARBPALETTE (HEX)
+- Keyboard background: #2E3440
+- Standard key: #3B4252
+- Modifier key: #434C5E
+- Key text: #ECEFF4
+- Secondary text: #D8DEE9
+- Key border: #4C566A
+- Pressed key: #515D73
+- Accent - selection only: #88C0D0
+- Suggestion text: #E5E9F0
+- Suggestion divider: #434C5E
+
+3. GEOMETRIE
+Tastenradius 6 pt; Kontur 0.5 pt in #4C566A. Keine harten Schlagschatten. Modifier sind nur eine Stufe heller als Standardtasten. Tastenabstand und Reihen unverändert von der bestehenden Apple-nahen Basis übernehmen.
+
+4. INTERAKTIONSZUSTÄNDE
+Pressed: Standardtaste nach #515D73 verschieben. Akzent #88C0D0 nur bei Auswahl im Theme-Studio oder für kleine Statusdetails nutzen. Akzent nicht für sämtliche Buchstaben oder ganze Reihen verwenden.
+
+5. SYSTEMMODUS / TRANSPARENZ
+Dieses Theme bleibt absichtlich dunkel, unabhängig von der iOS-Hell-/Dunkel-Einstellung. Bedienungshilfen wie Increase Contrast müssen den Rand bzw. die Helligkeitsunterschiede verstärken können.
+
+6. ABNAHMEKRITERIEN
+Kontrast von #ECEFF4 auf #3B4252 prüfen. Im echten iPhone-Screenshot darf der Unterschied zwischen Standard- und Modifier-Tasten sichtbar, aber nicht laut wirken. Kein Cyan-Glow.
+
+GEMEINSAME REGEL: Die bestehende Tastenlogik, das Layout und das Verhalten der nativen iOS-Tastatur nicht ändern. Nur Theme-Tokens und Oberflächen-Rendering anpassen.
+
+Quellen / Richtlinien:
+- Apple HIG - Color: https://developer.apple.com/design/human-interface-guidelines/color
+- Apple HIG - Dark Mode: https://developer.apple.com/design/human-interface-guidelines/dark-mode
+- Apple HIG - Materials: https://developer.apple.com/design/human-interface-guidelines/materials
+- HEX-Codes sind visuelle Zielwerte für das Theme-Studio, nicht garantiert identische private Apple-Systemfarben.

@@ -1,0 +1,39 @@
+THEME SPECIFICATION / SLATE GLASS
+==========================================================
+
+Kontrolliertes Milchglas mit klaren Kanten und gut lesbaren Glyphen.
+
+1. VISUELLE IDENTITÄT
+Das sichtbarste Premium-Theme. Dunkler Schiefer als Basis; Tasten wirken leicht transluzent und räumlich, ohne wie nasse Glasplättchen oder eine Neon-Gaming-Oberfläche auszusehen. Fokus auf echte Materialwirkung und subtile Umrisse.
+
+2. FARBPALETTE (HEX)
+- Keyboard base: #1D242E
+- Standard key tint: #FFFFFF21
+- Modifier key tint: #FFFFFF30
+- Key text: #F7F9FC
+- Secondary text: #D0D8E2
+- Border / edge highlight: #FFFFFF2B
+- Pressed overlay: #FFFFFF38
+- Accent: #9AC8F5
+- Suggestion divider: #FFFFFF20
+- Opaque fallback key: #343B47
+
+3. GEOMETRIE
+Tastenradius 7 pt; Rand 0.5 pt. Keine starke Drop-Shadow. Optional eine 1 px/pt feine obere Kantenaufhellung; keine große Außenleuchte. Keycaps dürfen nicht so transparent werden, dass Text oder Tastenform vom Hintergrund verschluckt wird.
+
+4. INTERAKTIONSZUSTÄNDE
+Material bzw. .ultraThinMaterial nur im Render-Layer aufbringen, mit halbtransparentem Tint darüber. Opacity-Codes hier sind #RRGGBBAA - beim Parsen nicht als #AARRGGBB lesen. Pressed: helles Overlay auf 22-25 % statt Scale-Bounce. Bei Reduce Transparency oder fehlendem zuverlässigem Backdrop opaque #343B47 nutzen.
+
+5. SYSTEMMODUS / TRANSPARENZ
+Theme bleibt schiefer/dunkel in beiden Systemmodi. Das Material muss sich an iOS-Systemeinstellungen anpassen und eine lesbare, solide Fallback-Ansicht besitzen. Ein Color mit Alpha allein ist KEIN Blur.
+
+6. ABNAHMEKRITERIEN
+Auf mindestens einem hellen und einem dunklen Host-App-Hintergrund prüfen, außerdem mit Reduce Transparency. Bei unlesbaren Glyphen zuerst die Key-Fläche opaker machen statt Text mit Glow/Schatten zu versehen.
+
+GEMEINSAME REGEL: Die bestehende Tastenlogik, das Layout und das Verhalten der nativen iOS-Tastatur nicht ändern. Nur Theme-Tokens und Oberflächen-Rendering anpassen.
+
+Quellen / Richtlinien:
+- Apple HIG - Color: https://developer.apple.com/design/human-interface-guidelines/color
+- Apple HIG - Dark Mode: https://developer.apple.com/design/human-interface-guidelines/dark-mode
+- Apple HIG - Materials: https://developer.apple.com/design/human-interface-guidelines/materials
+- HEX-Codes sind visuelle Zielwerte für das Theme-Studio, nicht garantiert identische private Apple-Systemfarben.

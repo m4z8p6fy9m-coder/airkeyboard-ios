@@ -1,0 +1,39 @@
+THEME SPECIFICATION / MIDNIGHT OLED
+==========================================================
+
+Tiefschwarz, Graphit-Keycaps und feine Konturen.
+
+1. VISUELLE IDENTITÄT
+Ein tiefschwarzer, moderner Look mit gezielter Flächenstaffelung. Keine klassischen grauen Flächen rundherum und kein glänzendes Gaming-Schwarz. Der OLED-Charakter kommt aus #000000 als Keyboard-Hintergrund; einzelne Tasten bleiben als Graphitflächen erkennbar.
+
+2. FARBPALETTE (HEX)
+- Keyboard background: #000000
+- Standard key: #1A1A1A
+- Modifier key: #252525
+- Key text: #F2F2F7
+- Secondary text: #B8B8BD
+- Key border: #353535
+- Pressed key: #303030
+- Accent - selection only: #0A84FF
+- Suggestion text: #E5E5EA
+- Suggestion divider: #272727
+
+3. GEOMETRIE
+Tastenradius 6 pt; Kontur 0.5 pt in #353535. Keine Schatten. Kontur soll gerade sichtbar genug sein, um benachbarte Keycaps bei geringer Helligkeit zu unterscheiden.
+
+4. INTERAKTIONSZUSTÄNDE
+Pressed: Taste auf #303030 ändern; Kontrast des Buchstabens unverändert lassen. System-Akzent nur an nötigen Interaktionspunkten nutzen. Keine hellen Glanzränder oder permanent leuchtenden Kanten.
+
+5. SYSTEMMODUS / TRANSPARENZ
+Bleibt in beiden Systemmodi dunkel. Dark-only ist hier Absicht. Reduce Transparency ist nicht relevant für feste Oberflächen; Increase Contrast muss stärkere Konturen anbieten können.
+
+6. ABNAHMEKRITERIEN
+Auf physischem OLED-Gerät und mit reduzierter Bildschirmhelligkeit prüfen. Reines Schwarz kann auf OLED den Stromverbrauch der schwarzen Pixel reduzieren; keine konkrete Akkuprozentzahl versprechen, weil das von Gerät und Nutzung abhängt.
+
+GEMEINSAME REGEL: Die bestehende Tastenlogik, das Layout und das Verhalten der nativen iOS-Tastatur nicht ändern. Nur Theme-Tokens und Oberflächen-Rendering anpassen.
+
+Quellen / Richtlinien:
+- Apple HIG - Color: https://developer.apple.com/design/human-interface-guidelines/color
+- Apple HIG - Dark Mode: https://developer.apple.com/design/human-interface-guidelines/dark-mode
+- Apple HIG - Materials: https://developer.apple.com/design/human-interface-guidelines/materials
+- HEX-Codes sind visuelle Zielwerte für das Theme-Studio, nicht garantiert identische private Apple-Systemfarben.

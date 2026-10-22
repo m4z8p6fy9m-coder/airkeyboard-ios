@@ -1,0 +1,41 @@
+THEME SPECIFICATION / CUPERTINO NATIVE
+==========================================================
+
+Die vertraute iPhone-Tastatur - sauber, adaptiv, unaufdringlich.
+
+1. VISUELLE IDENTITÄT
+Dies ist der Referenz-Look. Er soll sich wie eine natürliche Fortsetzung von iOS anfühlen: ruhige graue Tastaturfläche, klare Keycaps, systemnahe Typografie und keine dekorativen Effekte. Nicht als Retro-Design interpretieren und keine zusätzlichen Schatten oder Spielereien einbauen.
+
+2. FARBPALETTE (HEX)
+- Light - Keyboard background: #D5D8E0
+- Light - Key background: #FFFFFF
+- Light - Modifier key: #C3C9D4
+- Light - Key text: #17191D
+- Light - Secondary text: #555B66
+- Light - Key border: #BCC2CD
+- Dark - Keyboard background: #252629
+- Dark - Key background: #44464B
+- Dark - Modifier key: #34363B
+- Dark - Key text: #F5F5F7
+- Dark - Secondary text: #C5C7CD
+- System accent: #0A84FF
+
+3. GEOMETRIE
+Tastenradius 5.5 pt; keine sichtbare Kontur im Standardzustand, sofern die aktuelle Rendering-Implementierung das sauber abbildet. Wenn das Keycap-Feld auf hellen Displays zu wenig vom Hintergrund getrennt ist, stattdessen eine feine Kontur #BCC2CD mit 0.5 pt.
+
+4. INTERAKTIONSZUSTÄNDE
+Pressed: Taste kurz um eine Tonstufe abdunkeln/aufhellen, je nach Appearance. Keine dauerhafte blaue Taste für normale Buchstaben. Shift/Delete/123/Return bleiben in der zurückhaltenden Modifier-Farbe. System-Blau nur für kleine interaktive Indikatoren.
+
+5. SYSTEMMODUS / TRANSPARENZ
+Hell- und Dunkelmodus automatisch aus dem systemweiten iOS-ColorScheme/UIUserInterfaceStyle ableiten. In Produktion semantische UIKit-Systemfarben bevorzugen, wenn sie die gewünschte Hierarchie zuverlässig abbilden; HEX-Werte dienen als visuelle Zielwerte und Screenshot-Tests.
+
+6. ABNAHMEKRITERIEN
+Prüfen: Hintergrund bleibt klar von den Tasten unterscheidbar; Umlaute und Sonderzeichen werden in derselben Typografie wie andere Glyphen dargestellt; keine Änderung an Tastengeometrie oder Tastenbreiten.
+
+GEMEINSAME REGEL: Die bestehende Tastenlogik, das Layout und das Verhalten der nativen iOS-Tastatur nicht ändern. Nur Theme-Tokens und Oberflächen-Rendering anpassen.
+
+Quellen / Richtlinien:
+- Apple HIG - Color: https://developer.apple.com/design/human-interface-guidelines/color
+- Apple HIG - Dark Mode: https://developer.apple.com/design/human-interface-guidelines/dark-mode
+- Apple HIG - Materials: https://developer.apple.com/design/human-interface-guidelines/materials
+- HEX-Codes sind visuelle Zielwerte für das Theme-Studio, nicht garantiert identische private Apple-Systemfarben.

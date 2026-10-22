@@ -1,0 +1,156 @@
+// PremiumKeyboardThemes.swift
+// STARTER ONLY: Merge/adapt these tokens into the project's existing theme model.
+// Do not replace existing keyboard layout, input handling, or extension lifecycle.
+
+import SwiftUI
+import UIKit
+
+struct KeyboardThemeAppearance {
+    let keyboardBackground: Color
+    let keyBackground: Color
+    let specialKeyBackground: Color
+    let keyText: Color
+    let secondaryText: Color
+    let keyBorder: Color
+    let pressedOverlay: Color
+    let accent: Color
+}
+
+enum KeyboardThemeSurfaceStyle {
+    case solid
+    case glass
+}
+
+struct KeyboardThemeDefinition: Identifiable {
+    let id: String
+    let name: String
+    let surfaceStyle: KeyboardThemeSurfaceStyle
+    let light: KeyboardThemeAppearance
+    let dark: KeyboardThemeAppearance
+    let followsSystemAppearance: Bool
+
+    func appearance(for colorScheme: ColorScheme) -> KeyboardThemeAppearance {
+        guard followsSystemAppearance else { return dark }
+        return colorScheme == .dark ? dark : light
+    }
+}
+
+private extension Color {
+    /// Accepts #RRGGBB or #RRGGBBAA. Alpha is in the final two hex digits.
+    init(themeHex: String) {
+        let cleaned = themeHex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var value: UInt64 = 0
+        Scanner(string: cleaned).scanHexInt64(&value)
+        let hasAlpha = cleaned.count == 8
+        let r, g, b, a: Double
+        if hasAlpha {
+            r = Double((value >> 24) & 0xFF) / 255.0
+            g = Double((value >> 16) & 0xFF) / 255.0
+            b = Double((value >> 8) & 0xFF) / 255.0
+            a = Double(value & 0xFF) / 255.0
+        } else {
+            r = Double((value >> 16) & 0xFF) / 255.0
+            g = Double((value >> 8) & 0xFF) / 255.0
+            b = Double(value & 0xFF) / 255.0
+            a = 1.0
+        }
+        self.init(.sRGB, red: r, green: g, blue: b, opacity: a)
+    }
+}
+
+private enum ThemePalettes {
+    static let cupertinoLight = KeyboardThemeAppearance(
+        keyboardBackground: Color(themeHex: "#D5D8E0"),
+        keyBackground: Color(themeHex: "#FFFFFF"),
+        specialKeyBackground: Color(themeHex: "#C3C9D4"),
+        keyText: Color(themeHex: "#17191D"),
+        secondaryText: Color(themeHex: "#555B66"),
+        keyBorder: Color(themeHex: "#BCC2CD"),
+        pressedOverlay: Color(themeHex: "#D3D8E1"),
+        accent: Color(themeHex: "#0A84FF")
+    )
+
+    static let cupertinoDark = KeyboardThemeAppearance(
+        keyboardBackground: Color(themeHex: "#252629"),
+        keyBackground: Color(themeHex: "#44464B"),
+        specialKeyBackground: Color(themeHex: "#34363B"),
+        keyText: Color(themeHex: "#F5F5F7"),
+        secondaryText: Color(themeHex: "#C5C7CD"),
+        keyBorder: Color(themeHex: "#54565C"),
+        pressedOverlay: Color(themeHex: "#5A5D63"),
+        accent: Color(themeHex: "#0A84FF")
+    )
+
+    static let nord = KeyboardThemeAppearance(
+        keyboardBackground: Color(themeHex: "#2E3440"),
+        keyBackground: Color(themeHex: "#3B4252"),
+        specialKeyBackground: Color(themeHex: "#434C5E"),
+        keyText: Color(themeHex: "#ECEFF4"),
+        secondaryText: Color(themeHex: "#D8DEE9"),
+        keyBorder: Color(themeHex: "#4C566A"),
+        pressedOverlay: Color(themeHex: "#515D73"),
+        accent: Color(themeHex: "#88C0D0")
+    )
+
+    static let slateGlass = KeyboardThemeAppearance(
+        keyboardBackground: Color(themeHex: "#1D242E"),
+        keyBackground: Color(themeHex: "#FFFFFF21"),
+        specialKeyBackground: Color(themeHex: "#FFFFFF30"),
+        keyText: Color(themeHex: "#F7F9FC"),
+        secondaryText: Color(themeHex: "#D0D8E2"),
+        keyBorder: Color(themeHex: "#FFFFFF2B"),
+        pressedOverlay: Color(themeHex: "#FFFFFF38"),
+        accent: Color(themeHex: "#9AC8F5")
+    )
+
+    static let midnight = KeyboardThemeAppearance(
+        keyboardBackground: Color(themeHex: "#000000"),
+        keyBackground: Color(themeHex: "#1A1A1A"),
+        specialKeyBackground: Color(themeHex: "#252525"),
+        keyText: Color(themeHex: "#F2F2F7"),
+        secondaryText: Color(themeHex: "#B8B8BD"),
+        keyBorder: Color(themeHex: "#353535"),
+        pressedOverlay: Color(themeHex: "#303030"),
+        accent: Color(themeHex: "#0A84FF")
+    )
+}
+
+enum PremiumKeyboardThemes {
+    static let cupertinoNative = KeyboardThemeDefinition(
+        id: "cupertino-native", name: "Cupertino Native",
+        surfaceStyle: .solid,
+        light: ThemePalettes.cupertinoLight, dark: ThemePalettes.cupertinoDark,
+        followsSystemAppearance: true
+    )
+
+    static let nordMinimal = KeyboardThemeDefinition(
+        id: "nord-minimal", name: "Nord Minimal",
+        surfaceStyle: .solid,
+        light: ThemePalettes.nord, dark: ThemePalettes.nord,
+        followsSystemAppearance: false
+    )
+
+    static let slateGlass = KeyboardThemeDefinition(
+        id: "slate-glass", name: "Slate Glass",
+        surfaceStyle: .glass,
+        light: ThemePalettes.slateGlass, dark: ThemePalettes.slateGlass,
+        followsSystemAppearance: false
+    )
+
+    static let midnightOLED = KeyboardThemeDefinition(
+        id: "midnight-oled", name: "Midnight OLED",
+        surfaceStyle: .solid,
+        light: ThemePalettes.midnight, dark: ThemePalettes.midnight,
+        followsSystemAppearance: false
+    )
+
+    static let all: [KeyboardThemeDefinition] = [
+        cupertinoNative, nordMinimal, slateGlass, midnightOLED
+    ]
+}
+
+// Rendering note for Slate Glass:
+// .background(.ultraThinMaterial) must be applied by the actual key view,
+// followed by a restrained translucent tint and an explicit border.
+// For accessibility Reduce Transparency, prefer an opaque key fallback.
+// A Color with alpha by itself does not create a blur/material effect.
