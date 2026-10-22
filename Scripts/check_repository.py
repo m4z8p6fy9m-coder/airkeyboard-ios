@@ -1,6 +1,7 @@
 """Portable artifact checks. These do NOT compile or execute Swift/iOS code."""
 from pathlib import Path
 import json
+import math
 import plistlib
 import re
 import struct
@@ -38,6 +39,39 @@ def parse_pbx(text):
     result = value()
     if index != len(tokens): raise ValueError('Trailing project data')
     return result
+
+def validate_schema(value, schema, path='$'):
+    """Validate the subset used by our checked-in schema, without an external package."""
+    kind = schema.get('type')
+    valid_type = {
+        'object': lambda: isinstance(value, dict),
+        'string': lambda: isinstance(value, str),
+        'boolean': lambda: isinstance(value, bool),
+        'integer': lambda: isinstance(value, int) and not isinstance(value, bool),
+        'number': lambda: isinstance(value, (int, float)) and not isinstance(value, bool),
+    }
+    if kind and (kind not in valid_type or not valid_type[kind]()):
+        raise ValueError(f'{path}: expected {kind}')
+    if 'const' in schema and value != schema['const']: raise ValueError(f'{path}: wrong constant')
+    if 'enum' in schema and value not in schema['enum']: raise ValueError(f'{path}: unsupported value')
+    if isinstance(value, dict):
+        if not set(schema.get('required', [])).issubset(value): raise ValueError(f'{path}: missing field')
+        for key, child in schema.get('properties', {}).items():
+            if key in value: validate_schema(value[key], child, f'{path}.{key}')
+    if isinstance(value, str):
+        if len(value) < schema.get('minLength', 0) or len(value) > schema.get('maxLength', math.inf):
+            raise ValueError(f'{path}: string length')
+        if 'pattern' in schema and re.search(schema['pattern'], value) is None:
+            raise ValueError(f'{path}: invalid format')
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        if not math.isfinite(value) or value < schema.get('minimum', -math.inf) or value > schema.get('maximum', math.inf):
+            raise ValueError(f'{path}: number out of range')
+    for child in schema.get('allOf', []): validate_schema(value, child, path)
+    if 'if' in schema:
+        try: validate_schema(value, schema['if'], path)
+        except ValueError: branch = 'else'
+        else: branch = 'then'
+        validate_schema(value, schema.get(branch, {}), path)
 
 class RepositoryChecks(unittest.TestCase):
     @classmethod
@@ -142,32 +176,19 @@ class RepositoryChecks(unittest.TestCase):
     def test_example_packages_match_schema_and_starters(self):
         schema = json.loads((ROOT / 'Documentation/theme.schema.json').read_text())
         examples = list((ROOT / 'Examples').glob('*.json'))
-        self.assertEqual(len(examples), 6)
+        self.assertEqual(len(examples), 10)
         identifiers = set()
         swift = (ROOT / 'Shared/Core/StarterThemes.swift').read_text()
         for path in examples:
             value = json.loads(path.read_text())
             self.assertLessEqual(path.stat().st_size, 65536)
             self.assertTrue(set(schema['required']).issubset(value))
-            for key, spec in schema['properties'].items():
-                item = value[key]
-                if spec['type'] == 'string':
-                    self.assertIsInstance(item, str)
-                    if 'pattern' in spec: self.assertRegex(item, spec['pattern'])
-                    if 'minLength' in spec: self.assertGreaterEqual(len(item), spec['minLength'])
-                    if 'maxLength' in spec: self.assertLessEqual(len(item), spec['maxLength'])
-                else:
-                    self.assertIsInstance(item, (int, float)); self.assertNotIsInstance(item, bool)
-                    if spec['type'] == 'integer': self.assertIsInstance(item, int)
-                    if 'minimum' in spec: self.assertGreaterEqual(item, spec['minimum'])
-                    if 'maximum' in spec: self.assertLessEqual(item, spec['maximum'])
-                if 'enum' in spec: self.assertIn(item, spec['enum'])
-                if 'const' in spec: self.assertEqual(item, spec['const'])
+            validate_schema(value, schema)
             identifiers.add(value['id'])
             self.assertIn('"' + value['name'] + '"', swift)
             for key in ['background', 'key', 'primary', 'secondary', 'accent']:
-                self.assertIn('"' + value[key][1:] + '"', swift)
-        self.assertEqual(len(identifiers), 6)
+                self.assertTrue(any('"' + candidate + '"' in swift for candidate in [value[key], value[key][1:]]))
+        self.assertEqual(len(identifiers), 10)
 
     def test_no_network_or_clipboard_client_in_sources(self):
         for path in list((ROOT / 'App').glob('*.swift')) + list((ROOT / 'Keyboard').glob('*.swift')) + list((ROOT / 'Shared').rglob('*.swift')):
