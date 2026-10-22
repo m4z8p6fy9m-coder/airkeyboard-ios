@@ -58,4 +58,41 @@ final class ThemeWorkflowTests: XCTestCase {
         screenshot.lifetime = .keepAlways
         add(screenshot)
     }
+    func testSearchFindsSlateAndExposesAccessibilityPreview() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+        XCTAssertTrue(app.tabBars.buttons["Themes"].waitForExistence(timeout: 15))
+        app.tabBars.buttons["Themes"].tap()
+        let search = app.searchFields.firstMatch
+        XCTAssertTrue(search.waitForExistence(timeout: 5))
+        search.tap(); search.typeText("Slate\n")
+        let edit = app.buttons["theme.edit.00000000-0000-4000-8000-000000000009"]
+        XCTAssertTrue(edit.waitForExistence(timeout: 5))
+        for _ in 0..<5 { if edit.isHittable { break }; app.swipeUp() }
+        XCTAssertTrue(edit.isHittable); edit.tap()
+        let opaque = app.switches["studio.preview.opaque"]
+        for _ in 0..<8 { if opaque.isHittable { break }; app.swipeUp() }
+        XCTAssertTrue(opaque.isHittable)
+        opaque.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        let changed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "1"), object: opaque)
+        XCTAssertEqual(XCTWaiter.wait(for: [changed], timeout: 3), .completed)
+        XCTAssertTrue(app.staticTexts["studio.contrast.ratio"].exists)
+    }
+    func testInvalidNameDisablesSaveBeforePersistence() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+        XCTAssertTrue(app.tabBars.buttons["Themes"].waitForExistence(timeout: 15))
+        app.tabBars.buttons["Themes"].tap()
+        app.navigationBars["Themes"].buttons["New theme"].tap()
+        let name = app.textFields["studio.name"]
+        for _ in 0..<8 { if name.isHittable { break }; app.swipeUp() }
+        XCTAssertTrue(name.isHittable); name.tap()
+        let text = name.value as? String ?? ""
+        name.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: text.count) + "\n")
+        let save = app.navigationBars["Keyboard Studio"].buttons["Save & apply"]
+        let disabled = XCTNSPredicateExpectation(predicate: NSPredicate(format: "enabled == false"), object: save)
+        XCTAssertEqual(XCTWaiter.wait(for: [disabled], timeout: 3), .completed)
+    }
 }
