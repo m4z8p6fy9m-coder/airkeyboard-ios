@@ -29,11 +29,13 @@ struct ThemeKeySurface: View {
     let special: Bool
     let pressed: Bool
     var forceOpaque = false
+    @Environment(\.themePreviewAccessibility) private var previewOptions
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Environment(\.colorSchemeContrast) private var contrast
     private var glass: Bool { theme.rendering?.surface == .glass }
+    private var opaque: Bool { reduceTransparency || forceOpaque || previewOptions.opaque }
     private var fill: String {
-        if glass && (reduceTransparency || forceOpaque) {
+        if glass && opaque {
             return pressed ? Theme.opaqueGlassPressed : special ? Theme.opaqueGlassSpecialKey : Theme.opaqueGlassKey
         }
         return pressed ? theme.pressed : special ? (theme.rendering?.specialKey ?? theme.key) : theme.key
@@ -41,7 +43,7 @@ struct ThemeKeySurface: View {
     var body: some View {
         let shape = RoundedRectangle(cornerRadius: theme.cornerRadius)
         Group {
-            if glass && !reduceTransparency && !forceOpaque {
+            if glass && !opaque {
                 shape.fill(.ultraThinMaterial)
                     .environment(\.colorScheme, theme.appearance == .light ? .light : .dark)
                     .overlay(shape.fill(Color(hex: fill)))
@@ -49,8 +51,23 @@ struct ThemeKeySurface: View {
                 shape.fill(Color(hex: fill))
             }
         }
-        .overlay(shape.stroke(Color(hex: glass && (reduceTransparency || forceOpaque) ? Theme.opaqueGlassBorder : theme.border),
-                              lineWidth: contrast == .increased ? max(1, theme.borderWidth) : theme.borderWidth))
+        .overlay(shape.stroke(Color(hex: glass && opaque ? Theme.opaqueGlassBorder : theme.border),
+                              lineWidth: (contrast == .increased || previewOptions.increasedContrast) ? max(1, theme.borderWidth) : theme.borderWidth))
         .allowsHitTesting(false)
+    }
+}
+
+
+struct ThemePreviewAccessibility: Sendable {
+    var opaque = false
+    var increasedContrast = false
+}
+private struct ThemePreviewAccessibilityKey: EnvironmentKey {
+    static let defaultValue = ThemePreviewAccessibility()
+}
+extension EnvironmentValues {
+    var themePreviewAccessibility: ThemePreviewAccessibility {
+        get { self[ThemePreviewAccessibilityKey.self] }
+        set { self[ThemePreviewAccessibilityKey.self] = newValue }
     }
 }
