@@ -20,14 +20,29 @@ struct ThemesView: View {
     @State private var exportTheme = StarterThemes.defaultTheme
     @State private var deletion: Theme?
     @State private var favoritesOnly = false
+    @State private var query = ""
+    @State private var order = ThemeSortOrder.catalog
+    private var catalog: [Theme] {
+        model.library.catalog(query: query, favoritesOnly: favoritesOnly, order: order)
+    }
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
                 Toggle("Favorites only", isOn: $favoritesOnly)
-                if favoritesOnly && model.library.favorites.isEmpty {
-                    ContentUnavailableView("No favorites yet", systemImage: "heart", description: Text("Tap the heart on a theme to save it here."))
+                Picker("Sort themes", selection: $order) {
+                    Text("Catalog").tag(ThemeSortOrder.catalog)
+                    Text("Name").tag(ThemeSortOrder.name)
+                    Text("Favorites first").tag(ThemeSortOrder.favorites)
+                }.accessibilityIdentifier("themes.sort")
+                if model.library.themes.count >= 200 {
+                    Label("Library full: export and delete a design before saving a new one.", systemImage: "tray.full")
+                        .font(.callout).foregroundStyle(.secondary)
                 }
-                ForEach(model.library.themes.filter { !favoritesOnly || model.library.favorites.contains($0.id) }) { theme in
+                if catalog.isEmpty {
+                    ContentUnavailableView("No matching themes", systemImage: "magnifyingglass",
+                                           description: Text("Clear the search or turn off Favorites only."))
+                }
+                ForEach(catalog) { theme in
                     Surface {
                         HStack {
                             VStack(alignment: .leading) { Text(theme.name).font(.title3.bold()); Text(theme.description).font(.caption).foregroundStyle(.secondary) }
@@ -35,12 +50,14 @@ struct ThemesView: View {
                             Button { Task { await model.favorite(theme.id) } } label: {
                                 Image(systemName: model.library.favorites.contains(theme.id) ? "heart.fill" : "heart")
                             }.accessibilityLabel("Favorite \(theme.name)")
+                            .disabled(!model.library.themes.contains(where: { $0.id == theme.id }))
                         }
                         KeyboardPreview(theme: theme)
                         HStack {
                             Button(model.settings.theme == theme ? "Applied" : "Apply") { Task { await model.apply(theme) } }
                                 .buttonStyle(.borderedProminent)
                             NavigationLink("Edit") { StudioView(theme: theme) }
+                                .accessibilityIdentifier("theme.edit.\(theme.id.uuidString)")
                             Spacer()
                             Menu {
                                 Button("Duplicate", systemImage: "plus.square.on.square") {
@@ -57,6 +74,7 @@ struct ThemesView: View {
                 }
             }.padding(20).disabled(model.busy)
         }.navigationTitle("Themes")
+        .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search name or description")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) { Button("Import", systemImage: "square.and.arrow.down") { importing = true } }
             ToolbarItem(placement: .topBarTrailing) {

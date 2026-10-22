@@ -16,7 +16,13 @@ import WidgetKit
     }
     func load() async {
         do {
-            library = try await Task.detached { try Self.libraryStore().load() ?? ThemeLibrary() }.value
+            library = try await Task.detached {
+                let store = try Self.libraryStore()
+                let existing = try store.load() ?? ThemeLibrary()
+                let upgraded = try existing.addingPremiumThemes()
+                if upgraded != existing { try store.save(upgraded) }
+                return upgraded
+            }.value
             settings = try await SharedStore.load()
             sharingAvailable = try await SharedStore.isSharingAvailable()
         } catch { self.error = error.localizedDescription }
@@ -37,11 +43,7 @@ import WidgetKit
         guard !busy else { return false }
         busy = true; defer { busy = false }
         do {
-            var next = library
-            let valid = try theme.validated()
-            if let index = next.themes.firstIndex(where: { $0.id == valid.id }) { next.themes[index] = valid }
-            else { next.themes.append(valid) }
-            try await persist(next)
+            try await persist(library.saving(theme))
             return true
         } catch { self.error = error.localizedDescription; return false }
     }
