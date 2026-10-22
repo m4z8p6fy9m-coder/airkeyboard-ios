@@ -32,7 +32,7 @@ final class ThemeWorkflowTests: XCTestCase {
         preview.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
         expectPreviewValue("1")
         let name = app.textFields["Name"]
-        XCTAssertTrue(name.waitForExistence(timeout: 10))
+        reveal(name, in: app)
         let title = "CI Theme " + String(UUID().uuidString.prefix(8))
         name.tap()
         let existing = name.value as? String ?? ""
@@ -47,12 +47,12 @@ final class ThemeWorkflowTests: XCTestCase {
         app.launch()
         XCTAssertTrue(themes.waitForExistence(timeout: 15))
         themes.tap()
+        let search = app.searchFields.firstMatch
+        XCTAssertTrue(search.waitForExistence(timeout: 5))
+        search.tap(); search.typeText(title + "\n")
         let saved = app.staticTexts[title]
-        for _ in 0..<10 {
-            if saved.isHittable { break }
-            app.swipeUp()
-        }
-        XCTAssertTrue(saved.isHittable, "The saved theme must survive app termination and relaunch")
+        XCTAssertTrue(saved.waitForExistence(timeout: 5), "The saved theme must survive app termination and relaunch")
+        reveal(saved, in: app)
         let screenshot = XCTAttachment(screenshot: app.screenshot())
         screenshot.name = "Saved theme after app relaunch"
         screenshot.lifetime = .keepAlways
@@ -69,15 +69,17 @@ final class ThemeWorkflowTests: XCTestCase {
         search.tap(); search.typeText("Slate\n")
         let edit = app.buttons["theme.edit.00000000-0000-4000-8000-000000000009"]
         XCTAssertTrue(edit.waitForExistence(timeout: 5))
-        for _ in 0..<5 { if edit.isHittable { break }; app.swipeUp() }
-        XCTAssertTrue(edit.isHittable); edit.tap()
+        reveal(edit, in: app); edit.tap()
         let opaque = app.switches["studio.preview.opaque"]
-        for _ in 0..<8 { if opaque.isHittable { break }; app.swipeUp() }
-        XCTAssertTrue(opaque.isHittable)
+        reveal(opaque, in: app)
         opaque.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
         let changed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", "1"), object: opaque)
         XCTAssertEqual(XCTWaiter.wait(for: [changed], timeout: 3), .completed)
         XCTAssertTrue(app.staticTexts["studio.contrast.ratio"].exists)
+        let screenshot = XCTAttachment(screenshot: app.screenshot())
+        screenshot.name = "Slate Glass opaque preview controls"
+        screenshot.lifetime = .keepAlways
+        add(screenshot)
     }
     func testInvalidNameDisablesSaveBeforePersistence() {
         let app = XCUIApplication()
@@ -87,12 +89,18 @@ final class ThemeWorkflowTests: XCTestCase {
         app.tabBars.buttons["Themes"].tap()
         app.navigationBars["Themes"].buttons["New theme"].tap()
         let name = app.textFields["studio.name"]
-        for _ in 0..<8 { if name.isHittable { break }; app.swipeUp() }
-        XCTAssertTrue(name.isHittable); name.tap()
+        reveal(name, in: app); name.tap()
         let text = name.value as? String ?? ""
         name.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: text.count) + "\n")
         let save = app.navigationBars["Keyboard Studio"].buttons["Save & apply"]
         let disabled = XCTNSPredicateExpectation(predicate: NSPredicate(format: "enabled == false"), object: save)
         XCTAssertEqual(XCTWaiter.wait(for: [disabled], timeout: 3), .completed)
+    }
+    private func reveal(_ element: XCUIElement, in app: XCUIApplication) {
+        for _ in 0..<12 {
+            if element.isHittable { return }
+            app.swipeUp()
+        }
+        XCTAssertTrue(element.isHittable, "Expected control must be reachable in the scrolling form")
     }
 }
