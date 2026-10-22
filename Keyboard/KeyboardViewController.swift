@@ -120,14 +120,14 @@ final class KeyboardViewController: UIInputViewController {
         stopRepeating()
         stack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         let theme = settings.theme
-        view.backgroundColor = UIColor(hex: theme.background)
-        overrideUserInterfaceStyle = theme.appearance == .light ? .light : .dark
+        view.backgroundColor = UIColor { traits in UIColor(hex: theme.resolved(dark: traits.userInterfaceStyle == .dark).background) }
+        overrideUserInterfaceStyle = theme.rendering?.followsSystem == true ? .unspecified : (theme.appearance == .light ? .light : .dark)
         stack.spacing = theme.spacing
         stack.layoutMargins = UIEdgeInsets(top: 0, left: theme.padding, bottom: 0, right: theme.padding)
         stack.isLayoutMarginsRelativeArrangement = true
         status.font = .preferredFont(forTextStyle: .caption2)
         status.adjustsFontForContentSizeCategory = true
-        status.textColor = UIColor(hex: theme.secondary)
+        status.textColor = UIColor { traits in UIColor(hex: theme.resolved(dark: traits.userInterfaceStyle == .dark).secondary) }
         status.textAlignment = .center
         status.text = hasFullAccess ? "AirKeyboard" : "AirKeyboard · Full Access off · Silent"
         status.heightAnchor.constraint(greaterThanOrEqualToConstant: 18).isActive = true
@@ -245,7 +245,7 @@ final class KeyboardViewController: UIInputViewController {
         return row
     }
     private func button(_ title: String, label: String? = nil, action: @escaping () -> Void) -> UIButton {
-        let button = KeyButton(theme: settings.theme)
+        let button = KeyButton(theme: settings.theme, special: label != nil && label != "Space")
         button.setTitle(title, for: .normal)
         button.accessibilityLabel = label ?? title
         button.accessibilityTraits.insert(.keyboardKey)
@@ -290,23 +290,69 @@ final class KeyboardViewController: UIInputViewController {
 
 private final class KeyButton: UIButton {
     let theme: Theme
-    init(theme: Theme) {
+    private let special: Bool
+    private let material = UIVisualEffectView()
+    private let tint = UIView()
+    private var transparencyObserver: NSObjectProtocol?
+
+    init(theme: Theme, special: Bool) {
         self.theme = theme
+        self.special = special
         super.init(frame: .zero)
-        setTitleColor(UIColor(hex: theme.primary), for: .normal)
-        setTitleColor(UIColor(hex: theme.secondary), for: .disabled)
         layer.cornerRadius = theme.cornerRadius
-        layer.borderColor = UIColor(hex: theme.border).cgColor
-        layer.borderWidth = theme.borderWidth
+        layer.masksToBounds = true
+        material.isUserInteractionEnabled = false
+        tint.isUserInteractionEnabled = false
+        material.frame = bounds; material.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        tint.frame = bounds; tint.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        insertSubview(material, at: 0)
+        insertSubview(tint, aboveSubview: material)
         let base = UIFont.preferredFont(forTextStyle: .title3)
         let design: UIFontDescriptor.SystemDesign = theme.font == .rounded ? .rounded : theme.font == .monospaced ? .monospaced : .default
         titleLabel?.font = UIFont(descriptor: base.fontDescriptor.withDesign(design) ?? base.fontDescriptor, size: 0)
         titleLabel?.adjustsFontForContentSizeCategory = true
         titleLabel?.adjustsFontSizeToFitWidth = true
         titleLabel?.minimumScaleFactor = 0.5
-        backgroundColor = UIColor(hex: theme.key)
+        registerForTraitChanges([UITraitUserInterfaceStyle.self, UITraitAccessibilityContrast.self]) {
+            (button: KeyButton, _: UITraitCollection) in button.updateSurface()
+        }
+        transparencyObserver = NotificationCenter.default.addObserver(
+            forName: UIAccessibility.reduceTransparencyStatusDidChangeNotification, object: nil, queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor in self?.updateSurface() }
+        }
+        setTitleColor(UIColor { traits in UIColor(hex: theme.resolved(dark: traits.userInterfaceStyle == .dark).primary) }, for: .normal)
+        setTitleColor(UIColor { traits in UIColor(hex: theme.resolved(dark: traits.userInterfaceStyle == .dark).secondary) }, for: .disabled)
+        updateSurface()
     }
     required init?(coder: NSCoder) { fatalError("Programmatic keyboard only") }
-    override var isHighlighted: Bool { didSet { backgroundColor = UIColor(hex: isHighlighted ? theme.pressed : theme.key) } }
+    deinit {
+        if let transparencyObserver { NotificationCenter.default.removeObserver(transparencyObserver) }
+    }
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        updateSurface()
+    }
+    private func updateSurface() {
+        let resolved = theme.resolved(dark: traitCollection.userInterfaceStyle == .dark)
+        let glass = resolved.rendering?.surface == .glass
+        let opaque = glass && (UIAccessibility.isReduceTransparencyEnabled || window == nil)
+        backgroundColor = .clear
+        let wantsMaterial = glass && !opaque
+        if (material.effect != nil) != wantsMaterial {
+            material.effect = wantsMaterial ? UIBlurEffect(style: .systemUltraThinMaterialDark) : nil
+        }
+        material.isHidden = !glass || opaque
+        let fill: String
+        if opaque {
+            fill = isHighlighted ? Theme.opaqueGlassPressed : special ? Theme.opaqueGlassSpecialKey : Theme.opaqueGlassKey
+        } else {
+            fill = isHighlighted ? resolved.pressed : special ? (resolved.rendering?.specialKey ?? resolved.key) : resolved.key
+        }
+        tint.backgroundColor = UIColor(hex: fill)
+        layer.borderColor = UIColor(hex: opaque ? Theme.opaqueGlassBorder : resolved.border).cgColor
+        layer.borderWidth = traitCollection.accessibilityContrast == .high ? max(1, theme.borderWidth) : theme.borderWidth
+    }
+    override var isHighlighted: Bool { didSet { updateSurface() } }
     override var isEnabled: Bool { didSet { alpha = isEnabled ? 1 : 0.45 } }
 }
