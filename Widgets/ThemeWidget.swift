@@ -21,24 +21,26 @@ struct ThemeProvider: TimelineProvider {
 }
 struct ThemeWidgetView: View {
     let entry: ThemeEntry
+    @Environment(\.colorScheme) private var colorScheme
+    private var theme: Theme { entry.settings.theme.resolved(dark: colorScheme == .dark) }
     @Environment(\.widgetFamily) private var family
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             Label("AirKeyboard", systemImage: "keyboard").font(.caption)
-            Text(entry.unavailable ? "Sharing unavailable" : entry.settings.theme.name).font(.headline)
+            Text(entry.unavailable ? "Sharing unavailable" : theme.name).font(.headline)
             if family != .accessoryRectangular {
                 HStack(spacing: 5) {
                     ForEach(["A", "I", "R"], id: \.self) { key in
                         Text(key).font(.title3.bold()).frame(maxWidth: .infinity, minHeight: 36)
-                            .foregroundStyle(Color(hex: entry.settings.theme.primary))
-                            .background(Color(hex: entry.settings.theme.key), in: RoundedRectangle(cornerRadius: 6))
+                            .foregroundStyle(Color(hex: theme.primary))
+                            .background(ThemeKeySurface(theme: theme, special: false, pressed: false, forceOpaque: true))
                     }
                 }
                 Text(entry.unavailable ? "Open app for local themes" : entry.settings.sound.enabled ? entry.settings.sound.pack.title : "Sounds off").font(.caption)
             }
         }
-        .containerBackground(for: .widget) { Color(hex: entry.settings.theme.background) }
-        .foregroundStyle(family == .accessoryRectangular ? Color.primary : Color(hex: entry.settings.theme.primary))
+        .containerBackground(for: .widget) { Color(hex: theme.background) }
+        .foregroundStyle(family == .accessoryRectangular ? Color.primary : Color(hex: theme.primary))
         .widgetURL(URL(string: "airkeyboard://themes"))
     }
 }
