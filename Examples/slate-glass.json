@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "minimumIOS": 18,
+  "id": "00000000-0000-4000-8000-000000000009",
+  "name": "Slate Glass",
+  "description": "Restrained material with an accessible opaque fallback.",
+  "background": "#1D242E",
+  "key": "#FFFFFF21",
+  "primary": "#F7F9FC",
+  "secondary": "#D0D8E2",
+  "accent": "#9AC8F5",
+  "pressed": "#FFFFFF38",
+  "border": "#FFFFFF2B",
+  "cornerRadius": 7.0,
+  "spacing": 5,
+  "padding": 6,
+  "borderWidth": 0.5,
+  "font": "standard",
+  "appearance": "dark",
+  "layout": "qwerty",
+  "soundPack": "tactile",
+  "rendering": {
+    "surface": "glass",
+    "specialKey": "#FFFFFF30",
+    "followsSystem": false
+  }
+}

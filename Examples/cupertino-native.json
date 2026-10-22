@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "minimumIOS": 18,
+  "id": "00000000-0000-4000-8000-000000000007",
+  "name": "Cupertino Native",
+  "description": "Familiar light and dark, following your system.",
+  "background": "#252629",
+  "key": "#44464B",
+  "primary": "#F5F5F7",
+  "secondary": "#C5C7CD",
+  "accent": "#0A84FF",
+  "pressed": "#5A5D63",
+  "border": "#54565C",
+  "cornerRadius": 5.5,
+  "spacing": 5,
+  "padding": 6,
+  "borderWidth": 0.0,
+  "font": "standard",
+  "appearance": "dark",
+  "layout": "qwerty",
+  "soundPack": "tactile",
+  "rendering": {
+    "surface": "solid",
+    "specialKey": "#34363B",
+    "followsSystem": true,
+    "light": {
+      "background": "#D5D8E0",
+      "key": "#FFFFFF",
+      "specialKey": "#C3C9D4",
+      "primary": "#17191D",
+      "secondary": "#555B66",
+      "border": "#BCC2CD",
+      "pressed": "#D3D8E1",
+      "accent": "#0A84FF"
+    }
+  }
+}

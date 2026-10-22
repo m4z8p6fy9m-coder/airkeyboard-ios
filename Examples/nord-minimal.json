@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "minimumIOS": 18,
+  "id": "00000000-0000-4000-8000-000000000008",
+  "name": "Nord Minimal",
+  "description": "Quiet blue-gray with an icy accent.",
+  "background": "#2E3440",
+  "key": "#3B4252",
+  "primary": "#ECEFF4",
+  "secondary": "#D8DEE9",
+  "accent": "#88C0D0",
+  "pressed": "#515D73",
+  "border": "#4C566A",
+  "cornerRadius": 6.0,
+  "spacing": 5,
+  "padding": 6,
+  "borderWidth": 0.5,
+  "font": "standard",
+  "appearance": "dark",
+  "layout": "qwerty",
+  "soundPack": "tactile",
+  "rendering": {
+    "surface": "solid",
+    "specialKey": "#434C5E",
+    "followsSystem": false
+  }
+}

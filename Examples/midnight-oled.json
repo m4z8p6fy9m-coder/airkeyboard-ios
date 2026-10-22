@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "minimumIOS": 18,
+  "id": "00000000-0000-4000-8000-000000000010",
+  "name": "Midnight OLED",
+  "description": "True black background and distinct graphite keys.",
+  "background": "#000000",
+  "key": "#1A1A1A",
+  "primary": "#F2F2F7",
+  "secondary": "#B8B8BD",
+  "accent": "#0A84FF",
+  "pressed": "#303030",
+  "border": "#353535",
+  "cornerRadius": 6.0,
+  "spacing": 5,
+  "padding": 6,
+  "borderWidth": 0.5,
+  "font": "standard",
+  "appearance": "dark",
+  "layout": "qwerty",
+  "soundPack": "tactile",
+  "rendering": {
+    "surface": "solid",
+    "specialKey": "#252525",
+    "followsSystem": false
+  }
+}
